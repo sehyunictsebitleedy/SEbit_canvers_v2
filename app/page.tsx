@@ -40,8 +40,7 @@ export default function HomePage() {
     <main className="cv2-page">
       <header className="cv2-nav">
         <a className="cv2-brand" href="#top" aria-label="Canvers 홈">
-          <span className="cv2-brand-mark">C</span>
-          SEbit Canvers
+          <img src="/images/brand/logo.png" alt="Canvers" />
         </a>
         <nav aria-label="주요 메뉴">
           <a href="#templates">Templates</a>
@@ -306,8 +305,7 @@ export default function HomePage() {
       <footer className="cv2-footer" id="about">
         <div>
           <a className="cv2-brand footer" href="#top">
-            <span className="cv2-brand-mark">C</span>
-            SEbit Canvers
+            <img src="/images/brand/logo.png" alt="Canvers" />
           </a>
           <p>AI가 구조를 설계하고, 팀이 완성하는 웹서비스 시안 생성 플랫폼</p>
         </div>
