@@ -1,184 +1,301 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-const industries = [
-  { code: "CB", name: "카페·베이커리", en: "Café & Bakery", value: "food-cafe" },
-  { code: "BS", name: "뷰티·살롱", en: "Beauty & Salon", value: "beauty" },
-  { code: "FT", name: "피트니스", en: "Fitness Studio", value: "fitness" },
-  { code: "CL", name: "클리닉", en: "Clinic & Health", value: "clinic" },
-  { code: "RT", name: "레스토랑", en: "Restaurant", value: "restaurant" },
-  { code: "OS", name: "온라인 스토어", en: "Online Store", value: "online-store" }
-] as const;
+const templateCards = [
+  {
+    type: "SaaS",
+    title: "협업 도구 플랫폼",
+    description: "랜딩, 가격표, 회원가입 흐름까지 한 번에 제안합니다.",
+    tone: "green"
+  },
+  {
+    type: "Dashboard",
+    title: "데이터 관리 대시보드",
+    description: "지표, 카드, 테이블 구조를 목적에 맞게 구성합니다.",
+    tone: "blue"
+  },
+  {
+    type: "Editor",
+    title: "콘텐츠 에디터 서비스",
+    description: "문서 작성과 관리에 맞춘 화면 흐름을 설계합니다.",
+    tone: "cream"
+  }
+];
 
-const themes = [
-  { name: "Minimal", description: "여백 중심 · 미니멀", value: "minimal", preview: "minimal" },
-  { name: "Editorial", description: "잡지형 · 에디토리얼", value: "editorial", preview: "editorial" },
-  { name: "Bold", description: "강한 컬러 · 볼드", value: "bold", preview: "bold" },
-  { name: "Soft", description: "부드러운 · 파스텔", value: "soft", preview: "soft" }
-] as const;
+const cases = [
+  { name: "SaaS", copy: "서비스 소개와 전환 중심 페이지" },
+  { name: "Dashboard", copy: "관리자와 데이터 분석 화면" },
+  { name: "Editor", copy: "문서 작성과 콘텐츠 관리 화면" }
+];
 
 export default function HomePage() {
   const router = useRouter();
-  const [industry, setIndustry] = useState<(typeof industries)[number] | null>(null);
-  const [theme, setTheme] = useState<(typeof themes)[number] | null>(null);
-  const [message, setMessage] = useState("");
 
-  function startCreating() {
-    if (!industry || !theme) {
-      setMessage("업종과 디자인 테마를 먼저 선택해 주세요.");
-      document.querySelector("#select")?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
-
-    const params = new URLSearchParams({ industry: industry.value, themeKey: theme.value });
-    router.push(`/create?${params.toString()}`);
+  function startCreating(template = "saas") {
+    router.push(`/create?industry=online-store&themeKey=soft&template=${template}`);
   }
 
-  const summary = industry || theme
-    ? `선택됨 — ${[industry?.en, theme ? `${theme.name} 테마` : null].filter(Boolean).join(" · ")}`
-    : "업종과 테마를 선택하면 여기에 표시됩니다.";
-
   return (
-    <div className="landing-wrap">
-      <header className="landing-header">
-        <a className="landing-logo" href="#top" aria-label="Canvers 홈">
-          Canvers<span>.</span>
+    <main className="cv2-page">
+      <header className="cv2-nav">
+        <a className="cv2-brand" href="#top" aria-label="Canvers 홈">
+          <span className="cv2-brand-mark">C</span>
+          Canvers
         </a>
-        <nav className="landing-nav" aria-label="주요 메뉴">
-          <a href="#how">이용방법</a>
-          <a href="#select">테마</a>
-          <a href="#select">무료 시작</a>
+        <nav aria-label="주요 메뉴">
+          <a href="#templates">Templates</a>
+          <a href="#product">Product</a>
+          <a href="#cases">Cases</a>
+          <a href="#about">About</a>
         </nav>
-        <a className="button button-primary button-small" href="#select">
-          시안 만들기
-        </a>
+        <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating()}>
+          Start
+        </button>
       </header>
 
-      <main id="top">
-        <section className="landing-hero legacy-hero">
-          <div className="blob blob-one" />
-          <div className="blob blob-two" />
-          <div className="hero-content">
-            <div className="hero-eyebrow">✱ NO SIGNUP · FREE TO START</div>
-            <h1>
-              Find the style.
-              <span>Make it yours.</span>
-            </h1>
-            <p>
-              업종과 디자인 테마를 고르고 가게 정보를 입력하면, AI가 맞춤형 홈페이지 시안을
-              만들어드립니다. 회원가입 없이 3분이면 충분해요.
-            </p>
-            <div className="hero-start-panel">
-              <div>
-                <small>START YOUR WEBSITE</small>
-                <strong>지금 바로 무료로 홈페이지를 만들어보세요.</strong>
-              </div>
-              <a href="#select" className="button button-primary button-large">
-                무료로 시작하기 →
-              </a>
+      <section className="cv2-hero" id="top">
+        <div className="cv2-hero-copy">
+          <span className="cv2-pill">AI template builder</span>
+          <h1>
+            원하는 웹서비스 시안을
+            <br />
+            3분 만에 생성하세요.
+          </h1>
+          <p>템플릿을 선택하면 AI가 구조와 디자인을 먼저 제안합니다.</p>
+          <div className="cv2-actions">
+            <button className="cv2-button cv2-button-dark cv2-button-large" type="button" onClick={() => startCreating()}>
+              시안 만들기 시작하기
+              <span>→</span>
+            </button>
+            <a className="cv2-button cv2-button-light cv2-button-large" href="#flow">
+              작동 방식 보기
+            </a>
+          </div>
+          <div className="cv2-trust">
+            <span className="cv2-avatar-stack" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+            </span>
+            <strong>1.5K+</strong>
+            <span>drafts created</span>
+          </div>
+        </div>
+
+        <div className="cv2-hero-visual" aria-label="Canvers AI 시안 생성 미리보기">
+          <div className="cv2-preview-window">
+            <div className="cv2-window-top">
+              <span />
+              <span />
+              <span />
+              <small>Flowly</small>
             </div>
-            <div className="hero-footnote">
-              <p>업종 선택부터 AI 시안과 CMS 발급까지 하나의 흐름으로 이어집니다.</p>
-              <span>01</span>
+            <div className="cv2-preview-main">
+              <nav>
+                <b>Product</b>
+                <b>Pricing</b>
+                <b>Docs</b>
+                <b>Login</b>
+                <em>Get Started</em>
+              </nav>
+              <h2>업무를 연결하고 성장을 가속화하세요</h2>
+              <p>선택한 템플릿과 답변을 바탕으로 첫 화면을 구성합니다.</p>
+              <div className="cv2-mini-buttons">
+                <span>무료 시작하기</span>
+                <span>데모 보기</span>
+              </div>
+              <div className="cv2-metrics">
+                <article>
+                  <small>Projects</small>
+                  <strong>12</strong>
+                </article>
+                <article>
+                  <small>Task Progress</small>
+                  <strong>67%</strong>
+                </article>
+                <article>
+                  <small>Team Activity</small>
+                  <strong>24</strong>
+                </article>
+              </div>
             </div>
           </div>
-        </section>
 
-        <section className="process-grid" id="how" aria-label="이용 방법">
+          <aside className="cv2-ai-card">
+            <span>✦ AI 프롬프트</span>
+            <p>“B2B 협업 도구 페이지를 만들어줘. 신뢰감 있는 톤, 그린 포인트 컬러, 데이터 대시보드 섹션 포함.”</p>
+            <button type="button" onClick={() => startCreating("saas")}>생성하기</button>
+          </aside>
+
+          <aside className="cv2-template-mini">
+            <div>
+              <strong>템플릿 선택</strong>
+              <a href="#templates">모두 보기</a>
+            </div>
+            <div className="cv2-template-grid">
+              <span className="selected" />
+              <span />
+              <span />
+              <span className="dark" />
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section className="cv2-value" id="product">
+        <div>
+          <h2>
+            템플릿 선택이
+            <br />더 쉬워집니다
+          </h2>
+          <p>목적에 맞는 템플릿을 고르고, AI가 구조와 콘텐츠를 제안해 드립니다.</p>
+        </div>
+        <div className="cv2-value-list">
+          <article>
+            <span className="cv2-glyph cv2-glyph-cubes" />
+            <div>
+              <h3>Clear structure</h3>
+              <p>검증된 구조를 기반으로 필요한 섹션을 자동으로 구성합니다.</p>
+            </div>
+            <b>›</b>
+          </article>
+          <article>
+            <span className="cv2-glyph cv2-glyph-bolt" />
+            <div>
+              <h3>Fast draft</h3>
+              <p>아이디어를 입력하면 3분 내로 첫 초안을 생성합니다.</p>
+            </div>
+            <b>›</b>
+          </article>
+        </div>
+      </section>
+
+      <section className="cv2-dark-band" id="templates">
+        <div className="cv2-dark-copy">
+          <span>AI가</span>
+          <h2>
+            구조를 먼저
+            <br />
+            설계합니다
+          </h2>
+          <p>AI가 목적과 내용을 이해하고 최적의 페이지 구조를 제안합니다.</p>
+        </div>
+        <div className="cv2-dark-preview">
+          <span className="cv2-status">생성된 시안</span>
+          <div className="cv2-generated-card">
+            <small>SaaSBooster</small>
+            <h3>SaaS 비즈니스의 성장을 더 빠르게</h3>
+            <p>실제 서비스처럼 보이는 첫 화면과 핵심 섹션을 함께 만듭니다.</p>
+            <div className="cv2-chart-row">
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+        </div>
+        <div className="cv2-feature-cards">
+          <article>
+            <span className="cv2-feature-thumb editor" />
+            <div>
+              <h3>Editor</h3>
+              <p>드래그 앤 드롭 에디터로 쉽게 편집하고 완성해 보세요.</p>
+              <button type="button" onClick={() => startCreating("editor")}>자세히 보기 →</button>
+            </div>
+          </article>
+          <article>
+            <span className="cv2-feature-thumb dashboard" />
+            <div>
+              <h3>Dashboard</h3>
+              <p>페이지 성과를 한눈에 확인하고 지표 기반으로 개선하세요.</p>
+              <button type="button" onClick={() => startCreating("dashboard")}>자세히 보기 →</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section className="cv2-flow" id="flow">
+        <div>
+          <h2>
+            질문 몇 개로
+            <br />
+            바로 시작하세요.
+          </h2>
+          <p>간단한 질문에 답하면 AI가 최적의 시안을 만들어 드립니다.</p>
+        </div>
+        <div className="cv2-flow-steps">
           {[
-            ["01", "업종 선택", "Choose industry"],
-            ["02", "스타일 선택", "Pick a theme"],
-            ["03", "정보 입력", "Enter details"],
-            ["04", "AI 시안 완성", "Get your draft"]
-          ].map(([number, title, description]) => (
-            <article className="process-step" key={number}>
-              <span>{number}</span>
-              <h2>{title}</h2>
-              <p>{description}</p>
+            ["서비스 유형은?", "SaaS 협업 도구"],
+            ["주요 기능은?", "프로젝트 관리, 분석, 알림"],
+            ["원하는 톤은?", "신뢰감 있는, 경쾌한, 그린 포인트"]
+          ].map(([question, answer]) => (
+            <article key={question}>
+              <span />
+              <strong>{question}</strong>
+              <p>{answer}</p>
             </article>
           ))}
-        </section>
-
-        <section className="selection-section" id="select">
-          <div className="section-heading">
-            <span>01</span>
-            <div>
-              <h2>업종을 선택하세요</h2>
-              <p>Choose your industry</p>
-            </div>
+          <div className="cv2-flow-result">
+            <b>완성된 시안</b>
+            <h3>업무를 연결하고 성장을 가속화하세요</h3>
           </div>
+        </div>
+      </section>
 
-          <div className="industry-grid">
-            {industries.map((item) => (
-              <button
-                className={`selection-card industry-card ${industry?.value === item.value ? "selected" : ""}`}
-                type="button"
-                aria-pressed={industry?.value === item.value}
-                onClick={() => {
-                  setIndustry(item);
-                  setMessage("");
-                }}
-                key={item.value}
-              >
-                <span className="industry-mark">{item.code}</span>
-                <strong>{item.name}</strong>
-                <small>{item.en}</small>
-              </button>
-            ))}
-          </div>
+      <section className="cv2-cases" id="cases">
+        <div className="cv2-section-title">
+          <h2>Canvers로 만든 시안</h2>
+          <a href="#templates">모두 보기 →</a>
+        </div>
+        <div className="cv2-case-grid">
+          {templateCards.map((item) => (
+            <article className={`cv2-case-card ${item.tone}`} key={item.type}>
+              <span>{item.type}</span>
+              <div className="cv2-case-preview">
+                <i />
+                <i />
+                <i />
+              </div>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <button type="button" onClick={() => startCreating(item.type.toLowerCase())}>→</button>
+            </article>
+          ))}
+        </div>
+      </section>
 
-          <div className="section-heading theme-heading" id="themes">
-            <span>02</span>
-            <div>
-              <h2>디자인 테마</h2>
-              <p>Pick a theme</p>
-            </div>
-          </div>
+      <section className="cv2-cta">
+        <div>
+          <span>✦</span>
+          <h2>
+            지금 Canvers로
+            <br />
+            첫 시안을 만들어보세요.
+          </h2>
+          <p>AI가 구조와 디자인을 제안하고, 팀이 함께 완성합니다.</p>
+        </div>
+        <button className="cv2-button cv2-button-dark cv2-button-large" type="button" onClick={() => startCreating()}>
+          무료로 시작하기
+          <span>→</span>
+        </button>
+      </section>
 
-          <div className="landing-theme-grid">
-            {themes.map((item) => (
-              <button
-                className={`selection-card landing-theme-card ${theme?.value === item.value ? "selected" : ""}`}
-                type="button"
-                aria-pressed={theme?.value === item.value}
-                onClick={() => {
-                  setTheme(item);
-                  setMessage("");
-                }}
-                key={item.value}
-              >
-                <span className={`theme-thumbnail thumbnail-${item.preview}`} aria-hidden="true">
-                  {item.preview === "minimal" ? <><i /><i /><i /></> : null}
-                  {item.preview === "editorial" ? <><b /><em><i /><i /><i /></em></> : null}
-                  {item.preview === "bold" ? <i /> : null}
-                  {item.preview === "soft" ? <><i /><i /></> : null}
-                </span>
-                <span className="theme-copy">
-                  <strong>{item.name}</strong>
-                  <small>{item.description}</small>
-                </span>
-              </button>
-            ))}
-          </div>
-
-          <div className="selection-summary">
-            <div>
-              <p>{summary}</p>
-              <span className="validation-message" aria-live="polite">{message}</span>
-            </div>
-            <button className="button button-primary button-large" type="button" onClick={startCreating}>
-              다음 단계로 →
-            </button>
-          </div>
-        </section>
-      </main>
-
-      <footer className="landing-footer">
-        <span>SEbit Canvers © 2026</span>
-        <span>MADE FOR 소상공인 · 스타트업</span>
+      <footer className="cv2-footer" id="about">
+        <div>
+          <a className="cv2-brand footer" href="#top">
+            <span className="cv2-brand-mark">C</span>
+            Canvers
+          </a>
+          <p>AI가 구조를 설계하고, 팀이 완성하는 웹서비스 시안 생성 플랫폼</p>
+        </div>
+        <nav aria-label="푸터 메뉴">
+          <a href="#product">Product</a>
+          <a href="#templates">Templates</a>
+          <a href="#cases">Cases</a>
+          <a href="#top">Start</a>
+        </nav>
+        <small>© 2026 Canvers. All rights reserved.</small>
       </footer>
-    </div>
+    </main>
   );
 }

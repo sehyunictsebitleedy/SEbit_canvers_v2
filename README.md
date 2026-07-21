@@ -187,6 +187,10 @@ Canvers로 생성할 수 있는 시안 예시를 카드로 보여줍니다.
 - 프로젝트 기준 저장소를 `SEbit_canvers_v2`로 변경 준비
 - README를 v2 기준으로 재작성
 - 마지막 밝은 컴팩트 시안을 README 기준 시안으로 명시
+- 메인 랜딩 화면을 마지막 밝은 컴팩트 시안 기준으로 실제 코드에 반영
+- Hero, Value, Dark Feature Band, AI Builder Flow, Cases, CTA, Footer 섹션 구현
+- 기존 보라/파스텔 랜딩과 깨진 한글 문구를 v2 카피와 레이아웃으로 교체
+- `npm.cmd run build`로 Next.js 프로덕션 빌드 검증 완료
 
 ## 현재 구현 기준
 
