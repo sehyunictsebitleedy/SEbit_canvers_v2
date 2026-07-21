@@ -271,6 +271,11 @@ export default function HomePage() {
       </section>
 
       <section className="cv2-cta">
+        <div className="cv2-cta-bg" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
         <div>
           <span className="cv2-cta-kicker">Start from a template</span>
           <h2>
