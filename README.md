@@ -191,6 +191,8 @@ Canvers로 생성할 수 있는 시안 예시를 카드로 보여줍니다.
 - Hero, Value, Dark Feature Band, AI Builder Flow, Cases, CTA, Footer 섹션 구현
 - 기존 보라/파스텔 랜딩과 깨진 한글 문구를 v2 카피와 레이아웃으로 교체
 - `npm.cmd run build`로 Next.js 프로덕션 빌드 검증 완료
+- 내비게이션 hover 인디케이터, 버튼/카드 hover, Hero 프리뷰 float, AI 카드 float, 선택 카드 glow 등 v2 모션 레이어 추가
+- `prefers-reduced-motion` 대응으로 움직임 감소 환경에서는 주요 애니메이션 비활성화
 
 ## 현재 구현 기준
 
