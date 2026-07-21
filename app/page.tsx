@@ -41,7 +41,7 @@ export default function HomePage() {
       <header className="cv2-nav">
         <a className="cv2-brand" href="#top" aria-label="Canvers 홈">
           <span className="cv2-brand-mark">C</span>
-          Canvers
+          SEbit Canvers
         </a>
         <nav aria-label="주요 메뉴">
           <a href="#templates">Templates</a>
@@ -57,7 +57,7 @@ export default function HomePage() {
       <section className="cv2-hero" id="top">
         <div className="cv2-hero-copy">
           <span className="cv2-pill">AI template builder</span>
-          <h1>
+          <h1 className="h2_en">
             Create your ideal
             <br />
             web service draft.
@@ -73,9 +73,13 @@ export default function HomePage() {
             </a>
           </div>
           <div className="cv2-trust">
-            <span className="cv2-trust-chip">No signup</span>
-            <span className="cv2-trust-chip">Responsive</span>
-            <span className="cv2-trust-chip">AI draft</span>
+            <span className="cv2-avatar-stack" aria-label="Canvers 사용자 예시">
+              <i className="avatar-one" />
+              <i className="avatar-two" />
+              <i className="avatar-three" />
+            </span>
+            <strong>1.5K+</strong>
+            <span>drafts created</span>
           </div>
         </div>
 
@@ -95,7 +99,11 @@ export default function HomePage() {
                 <b>Login</b>
                 <em>Get Started</em>
               </nav>
-              <h2>업무를 연결하고 성장을 가속화하세요</h2>
+              <h2>
+                업무를 연결하고
+                <br />
+                성장을 가속화하세요
+              </h2>
               <p>선택한 템플릿과 답변을 바탕으로 첫 화면을 구성합니다.</p>
               <div className="cv2-mini-buttons">
                 <span>무료 시작하기</span>
@@ -130,10 +138,18 @@ export default function HomePage() {
               <a href="#templates">모두 보기</a>
             </div>
             <div className="cv2-template-grid">
-              <span className="selected" />
-              <span />
-              <span />
-              <span className="dark" />
+              <figure className="selected">
+                <img src="/images/examples/saas-example.png" alt="SaaS 시안 썸네일" />
+              </figure>
+              <figure>
+                <img src="/images/examples/dashboard-example.png" alt="Dashboard 시안 썸네일" />
+              </figure>
+              <figure>
+                <img src="/images/examples/editor-example.png" alt="Editor 시안 썸네일" />
+              </figure>
+              <figure className="dark">
+                <img src="/images/examples/saas-example.png" alt="Dark 템플릿 시안 썸네일" />
+              </figure>
             </div>
           </aside>
         </div>
@@ -222,11 +238,7 @@ export default function HomePage() {
 
       <section className="cv2-flow" id="flow">
         <div>
-          <h2>
-            질문 몇 개로
-            <br />
-            바로 시작하세요.
-          </h2>
+          <h2 className="h2_en">Question?</h2>
           <p>간단한 질문에 답하면 AI가 최적의 시안을 만들어 드립니다.</p>
         </div>
         <div className="cv2-flow-steps">
@@ -295,7 +307,7 @@ export default function HomePage() {
         <div>
           <a className="cv2-brand footer" href="#top">
             <span className="cv2-brand-mark">C</span>
-            Canvers
+            SEbit Canvers
           </a>
           <p>AI가 구조를 설계하고, 팀이 완성하는 웹서비스 시안 생성 플랫폼</p>
         </div>
