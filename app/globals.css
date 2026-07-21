@@ -1759,3 +1759,8 @@ a { color: inherit; text-decoration: none; }
     transition-duration: 0.01ms !important;
   }
 }
+
+.h2_en {
+  font-family: var(--display-font);
+  letter-spacing: -0.065em;
+}
