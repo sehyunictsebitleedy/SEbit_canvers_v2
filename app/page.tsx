@@ -191,14 +191,22 @@ export default function HomePage() {
             <br />
             설계합니다
           </h2>
-          <p>AI가 목적과 내용을 이해하고 최적의 페이지 구조를 제안합니다.</p>
+          <p>
+            AI가 목적과 내용을 이해하고
+            <br />
+            최적의 페이지 구조를 제안합니다.
+          </p>
         </div>
         <div className="cv2-dark-preview">
           <span className="cv2-status">생성된 시안</span>
           <div className="cv2-generated-card">
             <div className="cv2-generated-copy">
               <small>SaaS Template</small>
-              <h3>SaaS 비즈니스의 첫 화면을 빠르게 완성합니다.</h3>
+              <h3>
+                SaaS
+                <br />
+                첫 화면을 빠르게 완성합니다.
+              </h3>
               <p>랜딩, 가격표, 기능 소개, 회원가입 흐름까지 서비스 런칭에 필요한 기본 구조를 한 번에 제안합니다.</p>
               <ul>
                 <li>랜딩 페이지 구조</li>
