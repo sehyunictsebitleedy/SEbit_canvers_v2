@@ -195,6 +195,7 @@ Canvers로 생성할 수 있는 시안 예시를 카드로 보여줍니다.
 - `prefers-reduced-motion` 대응으로 움직임 감소 환경에서는 주요 애니메이션 비활성화
 - 2번째 주요 섹션의 SaaS, Editor, Dashboard 영역을 추상 아이콘 대신 실제 사이트 예시 이미지 썸네일로 교체
 - 예시 이미지를 `public/images/examples`에 추가하고 랜딩 페이지에서 직접 사용하도록 연결
+- SaaS 예시 영역의 이미지 크기를 줄이고, 랜딩/가격표/CTA 흐름을 설명하는 카피와 CTA 버튼을 다시 추가
 - Hero 메인 카피를 `Create your ideal web service draft.`로 영문 변경
 - Hero 텍스트, 서브 카피, CTA, trust chip이 아래에서 올라오도록 entrance 애니메이션 추가
 - 의미가 약한 장식 아이콘을 `No signup`, `Responsive`, `AI draft`, `AI Prompt`, 단계 번호 등 의미 기반 UI 라벨로 정리

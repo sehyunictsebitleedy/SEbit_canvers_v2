@@ -180,7 +180,20 @@ export default function HomePage() {
         <div className="cv2-dark-preview">
           <span className="cv2-status">생성된 시안</span>
           <div className="cv2-generated-card">
-            <img src="/images/examples/saas-example.png" alt="Canvers가 생성한 SaaS 웹사이트 시안 예시" />
+            <div className="cv2-generated-copy">
+              <small>SaaS Template</small>
+              <h3>SaaS 비즈니스의 첫 화면을 빠르게 완성합니다.</h3>
+              <p>랜딩, 가격표, 기능 소개, 회원가입 흐름까지 서비스 런칭에 필요한 기본 구조를 한 번에 제안합니다.</p>
+              <ul>
+                <li>랜딩 페이지 구조</li>
+                <li>가격표와 CTA 흐름</li>
+                <li>가입/문의 전환 섹션</li>
+              </ul>
+              <button type="button" onClick={() => startCreating("saas")}>SaaS 시안 만들기 →</button>
+            </div>
+            <figure className="cv2-generated-image">
+              <img src="/images/examples/saas-example.png" alt="Canvers가 생성한 SaaS 웹사이트 시안 예시" />
+            </figure>
           </div>
         </div>
         <div className="cv2-feature-cards">
