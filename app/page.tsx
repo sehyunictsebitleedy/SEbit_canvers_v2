@@ -58,9 +58,9 @@ export default function HomePage() {
         <div className="cv2-hero-copy">
           <span className="cv2-pill">AI template builder</span>
           <h1>
-            원하는 웹서비스 시안을
+            Create your ideal
             <br />
-            3분 만에 생성하세요.
+            web service draft.
           </h1>
           <p>템플릿을 선택하면 AI가 구조와 디자인을 먼저 제안합니다.</p>
           <div className="cv2-actions">
@@ -73,13 +73,9 @@ export default function HomePage() {
             </a>
           </div>
           <div className="cv2-trust">
-            <span className="cv2-avatar-stack" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-            </span>
-            <strong>1.5K+</strong>
-            <span>drafts created</span>
+            <span className="cv2-trust-chip">No signup</span>
+            <span className="cv2-trust-chip">Responsive</span>
+            <span className="cv2-trust-chip">AI draft</span>
           </div>
         </div>
 
@@ -123,7 +119,7 @@ export default function HomePage() {
           </div>
 
           <aside className="cv2-ai-card">
-            <span>✦ AI 프롬프트</span>
+            <span>AI Prompt</span>
             <p>“B2B 협업 도구 페이지를 만들어줘. 신뢰감 있는 톤, 그린 포인트 컬러, 데이터 대시보드 섹션 포함.”</p>
             <button type="button" onClick={() => startCreating("saas")}>생성하기</button>
           </aside>
@@ -153,7 +149,7 @@ export default function HomePage() {
         </div>
         <div className="cv2-value-list">
           <article>
-            <span className="cv2-glyph cv2-glyph-cubes" />
+            <span className="cv2-glyph cv2-glyph-cubes" aria-hidden="true">IA</span>
             <div>
               <h3>Clear structure</h3>
               <p>검증된 구조를 기반으로 필요한 섹션을 자동으로 구성합니다.</p>
@@ -161,7 +157,7 @@ export default function HomePage() {
             <b>›</b>
           </article>
           <article>
-            <span className="cv2-glyph cv2-glyph-bolt" />
+            <span className="cv2-glyph cv2-glyph-bolt" aria-hidden="true">AI</span>
             <div>
               <h3>Fast draft</h3>
               <p>아이디어를 입력하면 3분 내로 첫 초안을 생성합니다.</p>
@@ -228,9 +224,9 @@ export default function HomePage() {
             ["서비스 유형은?", "SaaS 협업 도구"],
             ["주요 기능은?", "프로젝트 관리, 분석, 알림"],
             ["원하는 톤은?", "신뢰감 있는, 경쾌한, 그린 포인트"]
-          ].map(([question, answer]) => (
+          ].map(([question, answer], index) => (
             <article key={question}>
-              <span />
+              <span>{String(index + 1).padStart(2, "0")}</span>
               <strong>{question}</strong>
               <p>{answer}</p>
             </article>
@@ -266,7 +262,7 @@ export default function HomePage() {
 
       <section className="cv2-cta">
         <div>
-          <span>✦</span>
+          <span className="cv2-cta-kicker">Start from a template</span>
           <h2>
             지금 Canvers로
             <br />

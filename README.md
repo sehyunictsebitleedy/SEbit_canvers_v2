@@ -193,6 +193,9 @@ Canvers로 생성할 수 있는 시안 예시를 카드로 보여줍니다.
 - `npm.cmd run build`로 Next.js 프로덕션 빌드 검증 완료
 - 내비게이션 hover 인디케이터, 버튼/카드 hover, Hero 프리뷰 float, AI 카드 float, 선택 카드 glow 등 v2 모션 레이어 추가
 - `prefers-reduced-motion` 대응으로 움직임 감소 환경에서는 주요 애니메이션 비활성화
+- Hero 메인 카피를 `Create your ideal web service draft.`로 영문 변경
+- Hero 텍스트, 서브 카피, CTA, trust chip이 아래에서 올라오도록 entrance 애니메이션 추가
+- 의미가 약한 장식 아이콘을 `No signup`, `Responsive`, `AI draft`, `AI Prompt`, 단계 번호 등 의미 기반 UI 라벨로 정리
 
 ## 현재 구현 기준
 
