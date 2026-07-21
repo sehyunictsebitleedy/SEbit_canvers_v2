@@ -9,7 +9,7 @@ export async function generateSiteAction(formData: FormData) {
   const input: GenerateSiteInput = {
     track: String(formData.get("track") || "theme") as Track,
     referenceUrls: referenceUrl ? [referenceUrl] : [],
-    themeKey: String(formData.get("themeKey") || "modern-business") as ThemeKey,
+    themeKey: String(formData.get("themeKey") || "soft") as ThemeKey,
     businessName: String(formData.get("businessName") || "").trim(),
     slug: String(formData.get("slug") || "").trim(),
     industry: String(formData.get("industry") || "other") as Industry,

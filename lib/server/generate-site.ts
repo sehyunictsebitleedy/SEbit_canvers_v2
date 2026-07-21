@@ -26,7 +26,7 @@ export async function generateSite(input: GenerateSiteInput): Promise<GeneratedS
   const slug = await findAvailableSlug(input.slug || toSlug(input.businessName));
   const style =
     input.track === "theme"
-      ? themePresets[input.themeKey || "modern-business"]
+      ? themePresets[input.themeKey || "soft"]
       : await extractStyleFromReferenceUrls(input.referenceUrls || []);
 
   const content = await generateContent(input, style);

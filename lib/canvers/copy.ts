@@ -9,6 +9,22 @@ const industryLabels = {
     about: "섬세한 케어",
     offerings: "주요 시술"
   },
+  fitness: {
+    about: "건강한 변화",
+    offerings: "주요 프로그램"
+  },
+  clinic: {
+    about: "편안한 진료",
+    offerings: "진료 분야"
+  },
+  restaurant: {
+    about: "맛과 공간",
+    offerings: "대표 메뉴"
+  },
+  "online-store": {
+    about: "브랜드와 제품",
+    offerings: "추천 제품"
+  },
   "professional-service": {
     about: "전문성과 신뢰",
     offerings: "전문 분야"

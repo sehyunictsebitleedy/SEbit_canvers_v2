@@ -3,13 +3,24 @@ export type Track = "reference" | "theme";
 export type Industry =
   | "food-cafe"
   | "beauty"
+  | "fitness"
+  | "clinic"
+  | "restaurant"
+  | "online-store"
   | "professional-service"
   | "product-workshop"
   | "other";
 
 export type Mood = "modern" | "warm" | "minimal";
 
-export type ThemeKey = "modern-business" | "warm-food" | "minimal-service";
+export type ThemeKey =
+  | "minimal"
+  | "editorial"
+  | "bold"
+  | "soft"
+  | "modern-business"
+  | "warm-food"
+  | "minimal-service";
 
 export type StyleSpec = {
   palette: {

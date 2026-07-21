@@ -1,166 +1,184 @@
-const referenceLinks = [
-  ["awwwards.com", "https://www.awwwards.com"],
-  ["onepagelove.com", "https://onepagelove.com"],
-  ["lapa.ninja", "https://www.lapa.ninja"],
-  ["muuuuu.org", "https://muuuuu.org"],
-  ["gdweb.co.kr", "https://www.gdweb.co.kr"],
-  ["dbcut.com", "https://www.dbcut.com"]
-];
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+const industries = [
+  { code: "CB", name: "카페·베이커리", en: "Café & Bakery", value: "food-cafe" },
+  { code: "BS", name: "뷰티·살롱", en: "Beauty & Salon", value: "beauty" },
+  { code: "FT", name: "피트니스", en: "Fitness Studio", value: "fitness" },
+  { code: "CL", name: "클리닉", en: "Clinic & Health", value: "clinic" },
+  { code: "RT", name: "레스토랑", en: "Restaurant", value: "restaurant" },
+  { code: "OS", name: "온라인 스토어", en: "Online Store", value: "online-store" }
+] as const;
+
+const themes = [
+  { name: "Minimal", description: "여백 중심 · 미니멀", value: "minimal", preview: "minimal" },
+  { name: "Editorial", description: "잡지형 · 에디토리얼", value: "editorial", preview: "editorial" },
+  { name: "Bold", description: "강한 컬러 · 볼드", value: "bold", preview: "bold" },
+  { name: "Soft", description: "부드러운 · 파스텔", value: "soft", preview: "soft" }
+] as const;
 
 export default function HomePage() {
+  const router = useRouter();
+  const [industry, setIndustry] = useState<(typeof industries)[number] | null>(null);
+  const [theme, setTheme] = useState<(typeof themes)[number] | null>(null);
+  const [message, setMessage] = useState("");
+
+  function startCreating() {
+    if (!industry || !theme) {
+      setMessage("업종과 디자인 테마를 먼저 선택해 주세요.");
+      document.querySelector("#select")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    const params = new URLSearchParams({ industry: industry.value, themeKey: theme.value });
+    router.push(`/create?${params.toString()}`);
+  }
+
+  const summary = industry || theme
+    ? `선택됨 — ${[industry?.en, theme ? `${theme.name} 테마` : null].filter(Boolean).join(" · ")}`
+    : "업종과 테마를 선택하면 여기에 표시됩니다.";
+
   return (
-    <>
-      <header className="site-header">
-        <a className="brand" href="#reference" aria-label="SEbit Canvers 홈">
-          <strong>SEbit Canvers</strong>
-          <span>AI website proposal</span>
+    <div className="landing-wrap">
+      <header className="landing-header">
+        <a className="landing-logo" href="#top" aria-label="Canvers 홈">
+          Canvers<span>.</span>
         </a>
-        <nav className="nav" aria-label="주요 섹션">
-          <a href="#reference">Reference</a>
-          <a href="#themes">Themes</a>
-          <a href="#about">About</a>
-          <a href="#ecosystem">SEbit</a>
+        <nav className="landing-nav" aria-label="주요 메뉴">
+          <a href="#how">이용방법</a>
+          <a href="#select">테마</a>
+          <a href="#select">무료 시작</a>
         </nav>
+        <a className="button button-primary button-small" href="#select">
+          시안 만들기
+        </a>
       </header>
 
-      <main>
-        <section className="section hero" id="reference" aria-labelledby="hero-title">
-          <div className="section-inner">
-            <p className="eyebrow">Reference first</p>
-            <h1 id="hero-title">
+      <main id="top">
+        <section className="landing-hero legacy-hero">
+          <div className="blob blob-one" />
+          <div className="blob blob-two" />
+          <div className="hero-content">
+            <div className="hero-eyebrow">✱ NO SIGNUP · FREE TO START</div>
+            <h1>
               Find the style.
               <span>Make it yours.</span>
             </h1>
-            <p className="hero-lead">
-              마음에 드는 사이트 주소를 넣으면, Canvers가 그 분위기를 읽고 내 가게 정보로 홈페이지 시안을 만듭니다.
+            <p>
+              업종과 디자인 테마를 고르고 가게 정보를 입력하면, AI가 맞춤형 홈페이지 시안을
+              만들어드립니다. 회원가입 없이 3분이면 충분해요.
             </p>
+            <div className="hero-start-panel">
+              <div>
+                <small>START YOUR WEBSITE</small>
+                <strong>지금 바로 무료로 홈페이지를 만들어보세요.</strong>
+              </div>
+              <a href="#select" className="button button-primary button-large">
+                무료로 시작하기 →
+              </a>
+            </div>
+            <div className="hero-footnote">
+              <p>업종 선택부터 AI 시안과 CMS 발급까지 하나의 흐름으로 이어집니다.</p>
+              <span>01</span>
+            </div>
+          </div>
+        </section>
 
-            <form className="search-panel" action="/create">
-              <input
-                className="search-input"
-                name="referenceUrl"
-                type="url"
-                inputMode="url"
-                placeholder="https://reference-site.com"
-                aria-label="참고 사이트 URL"
-              />
-              <button className="search-button" type="submit">
-                스타일 분석
+        <section className="process-grid" id="how" aria-label="이용 방법">
+          {[
+            ["01", "업종 선택", "Choose industry"],
+            ["02", "스타일 선택", "Pick a theme"],
+            ["03", "정보 입력", "Enter details"],
+            ["04", "AI 시안 완성", "Get your draft"]
+          ].map(([number, title, description]) => (
+            <article className="process-step" key={number}>
+              <span>{number}</span>
+              <h2>{title}</h2>
+              <p>{description}</p>
+            </article>
+          ))}
+        </section>
+
+        <section className="selection-section" id="select">
+          <div className="section-heading">
+            <span>01</span>
+            <div>
+              <h2>업종을 선택하세요</h2>
+              <p>Choose your industry</p>
+            </div>
+          </div>
+
+          <div className="industry-grid">
+            {industries.map((item) => (
+              <button
+                className={`selection-card industry-card ${industry?.value === item.value ? "selected" : ""}`}
+                type="button"
+                aria-pressed={industry?.value === item.value}
+                onClick={() => {
+                  setIndustry(item);
+                  setMessage("");
+                }}
+                key={item.value}
+              >
+                <span className="industry-mark">{item.code}</span>
+                <strong>{item.name}</strong>
+                <small>{item.en}</small>
               </button>
-            </form>
+            ))}
+          </div>
 
-            <div className="reference-row" aria-label="참고 URL 예시">
-              <span>참고 사이트 찾기</span>
-              {referenceLinks.map(([label, href]) => (
-                <a className="reference-chip" href={href} target="_blank" rel="noreferrer" key={href}>
-                  {label}
-                </a>
-              ))}
-            </div>
-
-            <div className="hero-foot">
-              <p>
-                URL이 없다면 다음 화면에서 추천 테마를 고르면 됩니다. 두 방식 모두 같은 스타일 명세로 정리되어 하나의 시안 생성 흐름으로 이어집니다.
-              </p>
-              <div className="page-index">01</div>
+          <div className="section-heading theme-heading" id="themes">
+            <span>02</span>
+            <div>
+              <h2>디자인 테마</h2>
+              <p>Pick a theme</p>
             </div>
           </div>
-        </section>
 
-        <section className="section" id="themes" aria-labelledby="themes-title">
-          <div className="section-inner">
-            <p className="eyebrow">Theme presets</p>
-            <div className="split-head">
-              <h2 className="display-title" id="themes-title">
-                Choose a visual language.
-              </h2>
-              <p className="section-note">
-                참고 URL을 고르기 어려운 고객을 위해 바로 시작할 수 있는 세 가지 추천 테마를 제공합니다.
-              </p>
-            </div>
-
-            <div className="theme-grid" aria-label="추천 테마 선택">
-              {[
-                ["theme-business", "모던 비즈니스", "Sharp Trust", "단정한 대비와 명확한 문장으로 신뢰가 필요한 브랜드에 적합합니다."],
-                ["theme-food", "감성 카페·푸드", "Daily Taste", "부드러운 색과 여유 있는 리듬으로 공간과 메뉴의 온도를 보여줍니다."],
-                ["theme-service", "심플 전문 서비스", "Less Noise", "필요한 정보만 남기는 구조로 상담과 문의 전환을 이끕니다."]
-              ].map(([themeClass, title, sample, desc], index) => (
-                <a className={`theme-card ${index === 0 ? "is-active" : ""}`} href="/create" key={title}>
-                  <span className={`theme-preview ${themeClass}`} aria-hidden="true">
-                    <span className="sample-title">{sample}</span>
-                  </span>
-                  <span className="theme-meta">
-                    <h3>{title}</h3>
-                    <p>{desc}</p>
-                  </span>
-                </a>
-              ))}
-            </div>
+          <div className="landing-theme-grid">
+            {themes.map((item) => (
+              <button
+                className={`selection-card landing-theme-card ${theme?.value === item.value ? "selected" : ""}`}
+                type="button"
+                aria-pressed={theme?.value === item.value}
+                onClick={() => {
+                  setTheme(item);
+                  setMessage("");
+                }}
+                key={item.value}
+              >
+                <span className={`theme-thumbnail thumbnail-${item.preview}`} aria-hidden="true">
+                  {item.preview === "minimal" ? <><i /><i /><i /></> : null}
+                  {item.preview === "editorial" ? <><b /><em><i /><i /><i /></em></> : null}
+                  {item.preview === "bold" ? <i /> : null}
+                  {item.preview === "soft" ? <><i /><i /></> : null}
+                </span>
+                <span className="theme-copy">
+                  <strong>{item.name}</strong>
+                  <small>{item.description}</small>
+                </span>
+              </button>
+            ))}
           </div>
-        </section>
 
-        <section className="section" id="about" aria-labelledby="about-title">
-          <div className="section-inner about-panel">
-            <div className="about-statement">
-              <p id="about-title">좋은 가게가 좋은 홈페이지를 갖기까지의 간격을 줄입니다.</p>
+          <div className="selection-summary">
+            <div>
+              <p>{summary}</p>
+              <span className="validation-message" aria-live="polite">{message}</span>
             </div>
-            <div className="purpose-list" aria-label="서비스 목적">
-              <div className="purpose-item">
-                <b>01. 선택을 단순하게</b>
-                <span>참고 사이트를 넣거나 준비된 테마를 고르는 두 가지 길만 남깁니다.</span>
-              </div>
-              <div className="purpose-item">
-                <b>02. 내 정보로 구체화</b>
-                <span>가게명, 업종, 소개, 핵심 제공물을 넣어 실제 내 홈페이지처럼 보이게 합니다.</span>
-              </div>
-              <div className="purpose-item">
-                <b>03. 다음 영업으로 연결</b>
-                <span>무료 시안 경험 이후 맞춤 제작 문의로 자연스럽게 이어지는 리드 흐름을 만듭니다.</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section ecosystem" id="ecosystem" aria-labelledby="ecosystem-title">
-          <div className="section-inner">
-            <p className="eyebrow">SEbit ecosystem</p>
-            <div className="split-head">
-              <h2 className="display-title" id="ecosystem-title">
-                Small business tools, connected.
-              </h2>
-              <p className="section-note">
-                SEbit은 소상공인이 온라인에서 발견되고, 설득하고, 문의를 받는 과정을 하나의 운영 흐름으로 연결합니다.
-              </p>
-            </div>
-
-            <div className="ecosystem-map">
-              <div className="orbit" aria-label="SEbit 생태계">
-                <h3 className="orbit-title">From idea to lead.</h3>
-                <div className="orbit-list">
-                  {["Canvers", "CMS", "Lead Form", "Growth Data"].map((item) => (
-                    <div className="orbit-node" key={item}>
-                      <b>{item}</b>
-                      <span>시안 생성부터 수정, 문의 수집, 전환 학습까지 연결합니다.</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <aside className="company-card" aria-label="세현 소개">
-                <div>
-                  <h3>세현은 작은 사업자의 첫 화면을 설계합니다.</h3>
-                  <p>
-                    세현은 AI 기반 제작 흐름과 실무형 웹 운영 경험을 결합해, 초기 창업자와 소상공인이 빠르게 검증 가능한 온라인 시안을 얻도록 돕습니다.
-                  </p>
-                </div>
-                <a className="primary-button" href="/create">
-                  시안 생성 시작
-                </a>
-              </aside>
-            </div>
+            <button className="button button-primary button-large" type="button" onClick={startCreating}>
+              다음 단계로 →
+            </button>
           </div>
         </section>
       </main>
-    </>
+
+      <footer className="landing-footer">
+        <span>SEbit Canvers © 2026</span>
+        <span>MADE FOR 소상공인 · 스타트업</span>
+      </footer>
+    </div>
   );
 }
