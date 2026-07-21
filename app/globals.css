@@ -901,38 +901,20 @@ a { color: inherit; text-decoration: none; }
 
 .cv2-generated-card {
   margin-top: 44px;
-  padding: 48px;
+  padding: 14px;
   color: #17181c;
   background: linear-gradient(180deg, #ffffff, #f6f7f1);
   border-radius: 22px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
 }
 
-.cv2-generated-card h3 {
-  max-width: 420px;
-  margin: 46px 0 12px;
-  font-size: 38px;
-  line-height: 1.08;
-  letter-spacing: -0.06em;
-}
-
-.cv2-generated-card p {
-  color: #686b72;
-  line-height: 1.65;
-}
-
-.cv2-chart-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 42px;
-}
-
-.cv2-chart-row span {
-  height: 92px;
-  background:
-    linear-gradient(180deg, transparent 54%, rgba(155, 225, 93, 0.26)),
-    repeating-linear-gradient(90deg, #d6dae0 0 18%, transparent 18% 28%);
+.cv2-generated-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
   border-radius: 16px;
 }
 
@@ -945,7 +927,7 @@ a { color: inherit; text-decoration: none; }
 
 .cv2-feature-cards article {
   display: grid;
-  grid-template-columns: 118px 1fr;
+  grid-template-columns: minmax(190px, 0.82fr) 1fr;
   gap: 24px;
   padding: 28px;
   color: #17181c;
@@ -968,22 +950,21 @@ a { color: inherit; text-decoration: none; }
 
 .cv2-feature-thumb {
   display: block;
-  width: 118px;
-  height: 118px;
+  width: 100%;
+  min-height: 150px;
   border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(23, 24, 28, 0.08);
 }
 
-.cv2-feature-thumb.editor {
-  background:
-    linear-gradient(90deg, rgba(23,24,28,0.12) 20%, transparent 0),
-    linear-gradient(180deg, #eaffd3, #f7fff0);
-}
-
-.cv2-feature-thumb.dashboard {
-  background:
-    radial-gradient(circle at 70% 30%, #9be15d 0 22%, transparent 23%),
-    repeating-linear-gradient(90deg, #d8e4d2 0 14%, transparent 14% 22%),
-    #f7fff0;
+.cv2-feature-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  object-fit: cover;
+  object-position: top left;
+  transform: scale(1.01);
 }
 
 .cv2-flow {

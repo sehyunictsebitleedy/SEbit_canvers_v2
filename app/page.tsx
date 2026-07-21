@@ -180,19 +180,14 @@ export default function HomePage() {
         <div className="cv2-dark-preview">
           <span className="cv2-status">생성된 시안</span>
           <div className="cv2-generated-card">
-            <small>SaaSBooster</small>
-            <h3>SaaS 비즈니스의 성장을 더 빠르게</h3>
-            <p>실제 서비스처럼 보이는 첫 화면과 핵심 섹션을 함께 만듭니다.</p>
-            <div className="cv2-chart-row">
-              <span />
-              <span />
-              <span />
-            </div>
+            <img src="/images/examples/saas-example.png" alt="Canvers가 생성한 SaaS 웹사이트 시안 예시" />
           </div>
         </div>
         <div className="cv2-feature-cards">
           <article>
-            <span className="cv2-feature-thumb editor" />
+            <span className="cv2-feature-thumb editor">
+              <img src="/images/examples/editor-example.png" alt="콘텐츠 에디터 웹사이트 시안 예시" />
+            </span>
             <div>
               <h3>Editor</h3>
               <p>드래그 앤 드롭 에디터로 쉽게 편집하고 완성해 보세요.</p>
@@ -200,7 +195,9 @@ export default function HomePage() {
             </div>
           </article>
           <article>
-            <span className="cv2-feature-thumb dashboard" />
+            <span className="cv2-feature-thumb dashboard">
+              <img src="/images/examples/dashboard-example.png" alt="데이터 대시보드 웹사이트 시안 예시" />
+            </span>
             <div>
               <h3>Dashboard</h3>
               <p>페이지 성과를 한눈에 확인하고 지표 기반으로 개선하세요.</p>
