@@ -45,8 +45,8 @@ export default function HomePage() {
         </a>
         <nav aria-label="주요 메뉴">
           <a href="/templates">Templates</a>
-          <a href="#product">Product</a>
-          <a href="#cases">Cases</a>
+          <a href="/product">Product</a>
+          <a href="/cases">Use Case Drafts</a>
           <a href="#about">About</a>
         </nav>
         <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating()}>
@@ -320,9 +320,9 @@ export default function HomePage() {
           <p>AI가 구조를 설계하고, 팀이 완성하는 웹서비스 시안 생성 플랫폼</p>
         </div>
         <nav aria-label="푸터 메뉴">
-          <a href="#product">Product</a>
+          <a href="/product">Product</a>
           <a href="/templates">Templates</a>
-          <a href="#cases">Cases</a>
+          <a href="/cases">Use Case Drafts</a>
           <a href="#top">Start</a>
         </nav>
         <small>© 2026 Canvers. All rights reserved.</small>

@@ -206,6 +206,12 @@ Canvers로 생성할 수 있는 시안 예시를 카드로 보여줍니다.
 - 의미가 약한 장식 아이콘을 `No signup`, `Responsive`, `AI draft`, `AI Prompt`, 단계 번호 등 의미 기반 UI 라벨로 정리
 - `/templates` 페이지 추가: Editor, Dashboard, SaaS, Template별 설명과 `시안 만들기` 버튼 제공
 - 메인 내비게이션과 템플릿 관련 링크를 `/templates` 페이지로 연결
+- `/product` 페이지를 템플릿 목록과 분리: Prompt to Structure, AI Section Builder, Copy Draft, Responsive Preview, Edit & Share 기능 흐름 중심으로 재구성
+- `/product` 페이지 카피를 `Ask, Build, Write, Preview, Share` 중심으로 축약하고 compact UI 패널 디자인으로 정리
+- `/product`의 `시작하기` 버튼을 `/templates`의 `시안 만들기` CTA와 동일한 블랙 버튼 및 화살표 hover 스타일로 통일
+- `/cases` 페이지 추가: 실제 고객 사례 대신 v1에서 바로 시작 가능한 Startup Launch, Local Brand, AI Tool 사용 상황별 `Use Case Drafts` 카드로 구성
+- 메인, Templates, Product 내비게이션의 `Cases` 링크를 `/cases` 페이지로 연결
+- 내비게이션 메뉴명을 `Cases`에서 `Use Case Drafts`로 변경
 
 ## 현재 구현 기준
 
