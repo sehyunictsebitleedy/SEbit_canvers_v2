@@ -44,7 +44,7 @@ export default function HomePage() {
           <span className="cv2-brand-word">Canvers</span>
         </a>
         <nav aria-label="주요 메뉴">
-          <a href="#templates">Templates</a>
+          <a href="/templates">Templates</a>
           <a href="#product">Product</a>
           <a href="#cases">Cases</a>
           <a href="#about">About</a>
@@ -135,7 +135,7 @@ export default function HomePage() {
           <aside className="cv2-template-mini">
             <div>
               <strong>템플릿 선택</strong>
-              <a href="#templates">모두 보기</a>
+              <a href="/templates">모두 보기</a>
             </div>
             <div className="cv2-template-grid">
               <figure className="selected">
@@ -271,7 +271,7 @@ export default function HomePage() {
       <section className="cv2-cases" id="cases">
         <div className="cv2-section-title">
           <h2>Canvers로 만든 시안</h2>
-          <a href="#templates">모두 보기 →</a>
+          <a href="/templates">모두 보기 →</a>
         </div>
         <div className="cv2-case-grid">
           {templateCards.map((item) => (
@@ -321,7 +321,7 @@ export default function HomePage() {
         </div>
         <nav aria-label="푸터 메뉴">
           <a href="#product">Product</a>
-          <a href="#templates">Templates</a>
+          <a href="/templates">Templates</a>
           <a href="#cases">Cases</a>
           <a href="#top">Start</a>
         </nav>

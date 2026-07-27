@@ -204,6 +204,8 @@ Canvers로 생성할 수 있는 시안 예시를 카드로 보여줍니다.
 - Hero 메인 카피를 `Create your ideal web service draft.`로 영문 변경
 - Hero 텍스트, 서브 카피, CTA, trust chip이 아래에서 올라오도록 entrance 애니메이션 추가
 - 의미가 약한 장식 아이콘을 `No signup`, `Responsive`, `AI draft`, `AI Prompt`, 단계 번호 등 의미 기반 UI 라벨로 정리
+- `/templates` 페이지 추가: Editor, Dashboard, SaaS, Template별 설명과 `시안 만들기` 버튼 제공
+- 메인 내비게이션과 템플릿 관련 링크를 `/templates` 페이지로 연결
 
 ## 현재 구현 기준
 
