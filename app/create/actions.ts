@@ -1,23 +1,24 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { generateSite, parseOfferingsText } from "@/lib/server/generate-site";
-import type { GenerateSiteInput, Industry, ThemeKey, Track } from "@/lib/canvers/types";
+import { generateSite, parseFeatureText, parseOfferingsText } from "@/lib/server/generate-site";
+import type { GenerateSiteInput, Industry, NavLayout, TemplateKey, ThemeKey } from "@/lib/canvers/types";
 
 export async function generateSiteAction(formData: FormData) {
-  const referenceUrl = String(formData.get("referenceUrls") || "").trim();
   const input: GenerateSiteInput = {
-    track: String(formData.get("track") || "theme") as Track,
-    referenceUrls: referenceUrl ? [referenceUrl] : [],
+    track: "theme",
+    template: String(formData.get("template") || "saas") as TemplateKey,
+    navLayout: String(formData.get("navLayout") || "top") as NavLayout,
     themeKey: String(formData.get("themeKey") || "soft") as ThemeKey,
     businessName: String(formData.get("businessName") || "").trim(),
     slug: String(formData.get("slug") || "").trim(),
-    industry: String(formData.get("industry") || "other") as Industry,
+    industry: String(formData.get("industry") || "online-store") as Industry,
     oneLiner: String(formData.get("oneLiner") || "").trim(),
+    targetAudience: String(formData.get("targetAudience") || "").trim() || undefined,
+    keyFeatures: parseFeatureText(String(formData.get("keyFeatures") || "")),
+    visualTone: String(formData.get("visualTone") || "").trim() || undefined,
     offerings: parseOfferingsText(String(formData.get("offerings") || "")),
-    address: String(formData.get("address") || "").trim() || undefined,
-    contact: String(formData.get("contact") || "").trim() || undefined,
-    businessHours: String(formData.get("businessHours") || "").trim() || undefined
+    contact: String(formData.get("contact") || "").trim() || undefined
   };
 
   const site = await generateSite(input);

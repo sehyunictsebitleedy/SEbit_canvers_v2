@@ -46,7 +46,6 @@ export default function HomePage() {
         <nav aria-label="주요 메뉴">
           <a href="/templates">Templates</a>
           <a href="/product">Product</a>
-          <a href="/cases">Use Case Drafts</a>
           <a href="#about">About</a>
         </nav>
         <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating()}>
@@ -322,7 +321,6 @@ export default function HomePage() {
         <nav aria-label="푸터 메뉴">
           <a href="/product">Product</a>
           <a href="/templates">Templates</a>
-          <a href="/cases">Use Case Drafts</a>
           <a href="#top">Start</a>
         </nav>
         <small>© 2026 Canvers. All rights reserved.</small>

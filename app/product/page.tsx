@@ -62,7 +62,6 @@ export default function ProductPage() {
         <nav aria-label="주요 메뉴">
           <a href="/templates">Templates</a>
           <a href="/product">Product</a>
-          <a href="/cases">Use Case Drafts</a>
           <a href="/#about">About</a>
         </nav>
         <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating()}>

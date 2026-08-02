@@ -1,36 +1,16 @@
-import { createClient } from "@supabase/supabase-js";
+import { promises as fs } from "fs";
+import path from "path";
 import type { GeneratedSite } from "@/lib/canvers/types";
 
-type SiteRow = {
-  id: string;
-  slug: string;
-  owner_id?: string | null;
-  business_name: string;
-  industry: string;
-  one_liner: string;
-  style_json: unknown;
-  content_json: unknown;
-  contact?: string | null;
-  address?: string | null;
-  business_hours?: string | null;
-  created_at?: string;
-};
-
 const memorySites = new Map<string, GeneratedSite>();
+const sitesDir = path.join(process.cwd(), "data", "sites");
 
-function getSupabaseAdmin() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+function sitePath(slug: string) {
+  return path.join(sitesDir, `${slug}.json`);
+}
 
-  if (!url || !key) {
-    return null;
-  }
-
-  return createClient(url, key, {
-    auth: {
-      persistSession: false
-    }
-  });
+async function ensureSitesDir() {
+  await fs.mkdir(sitesDir, { recursive: true });
 }
 
 export async function isSlugTaken(slug: string) {
@@ -38,46 +18,31 @@ export async function isSlugTaken(slug: string) {
     return true;
   }
 
-  const supabase = getSupabaseAdmin();
-  if (!supabase) {
+  try {
+    await fs.access(sitePath(slug));
+    return true;
+  } catch {
     return false;
   }
-
-  const { data, error } = await supabase.from("sites").select("id").eq("slug", slug).maybeSingle();
-  if (error) {
-    throw error;
-  }
-
-  return Boolean(data);
 }
 
 export async function saveGeneratedSite(site: GeneratedSite) {
+  await ensureSitesDir();
   memorySites.set(site.slug, site);
-
-  const supabase = getSupabaseAdmin();
-  if (!supabase) {
-    return site;
-  }
-
-  const row: Omit<SiteRow, "created_at"> = {
-    id: site.id,
-    slug: site.slug,
-    business_name: site.input.businessName,
-    industry: site.input.industry,
-    one_liner: site.input.oneLiner,
-    style_json: site.style,
-    content_json: site.content,
-    contact: site.input.contact || null,
-    address: site.input.address || null,
-    business_hours: site.input.businessHours || null
-  };
-
-  const { error } = await supabase.from("sites").upsert(row);
-  if (error) {
-    throw error;
-  }
-
+  await fs.writeFile(sitePath(site.slug), JSON.stringify(site, null, 2), "utf8");
   return site;
+}
+
+export async function updateGeneratedSite(slug: string, updater: (site: GeneratedSite) => GeneratedSite) {
+  const currentSite = await getSiteBySlug(slug);
+
+  if (!currentSite) {
+    return null;
+  }
+
+  const nextSite = updater(currentSite);
+  await saveGeneratedSite(nextSite);
+  return nextSite;
 }
 
 export async function getSiteBySlug(slug: string) {
@@ -86,39 +51,14 @@ export async function getSiteBySlug(slug: string) {
     return memorySite;
   }
 
-  const supabase = getSupabaseAdmin();
-  if (!supabase) {
+  try {
+    const raw = await fs.readFile(sitePath(slug), "utf8");
+    const site = JSON.parse(raw) as GeneratedSite;
+    memorySites.set(slug, site);
+    return site;
+  } catch {
     return null;
   }
-
-  const { data, error } = await supabase.from("sites").select("*").eq("slug", slug).maybeSingle<SiteRow>();
-  if (error || !data) {
-    if (error) {
-      throw error;
-    }
-    return null;
-  }
-
-  return {
-    id: data.id,
-    slug: data.slug,
-    style: data.style_json,
-    content: data.content_json,
-    input: {
-      track: "theme",
-      businessName: data.business_name,
-      slug: data.slug,
-      industry: data.industry,
-      oneLiner: data.one_liner,
-      offerings: [],
-      contact: data.contact || undefined,
-      address: data.address || undefined,
-      businessHours: data.business_hours || undefined
-    },
-    publicUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/${data.slug}`,
-    cmsUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/${data.slug}/cms`,
-    createdAt: data.created_at || new Date().toISOString()
-  } as GeneratedSite;
 }
 
 export async function saveLead(input: {
@@ -127,29 +67,15 @@ export async function saveLead(input: {
   contact: string;
   message?: string;
 }) {
-  const supabase = getSupabaseAdmin();
-  if (!supabase) {
-    return {
-      id: crypto.randomUUID(),
-      ...input,
-      createdAt: new Date().toISOString()
-    };
-  }
+  const leadsDir = path.join(process.cwd(), "data", "leads");
+  await fs.mkdir(leadsDir, { recursive: true });
 
-  const { data, error } = await supabase
-    .from("leads")
-    .insert({
-      site_id: input.siteId,
-      name: input.name,
-      contact: input.contact,
-      message: input.message || null
-    })
-    .select("id")
-    .single();
+  const lead = {
+    id: crypto.randomUUID(),
+    ...input,
+    createdAt: new Date().toISOString()
+  };
 
-  if (error) {
-    throw error;
-  }
-
-  return data;
+  await fs.writeFile(path.join(leadsDir, `${lead.id}.json`), JSON.stringify(lead, null, 2), "utf8");
+  return lead;
 }

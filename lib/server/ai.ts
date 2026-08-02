@@ -14,13 +14,7 @@ function getOpenAI() {
   });
 }
 
-export async function extractStyleFromReferenceUrls(urls: string[]): Promise<StyleSpec> {
-  if (isMockMode() || urls.length === 0) {
-    return fallbackStyle;
-  }
-
-  // MVP note: production can add Playwright screenshot capture here, then send
-  // screenshots to a vision model. The fallback keeps generation resilient.
+export async function extractStyleFromReferenceUrls(): Promise<StyleSpec> {
   return fallbackStyle;
 }
 
@@ -35,23 +29,40 @@ export async function generateContent(input: GenerateSiteInput, style: StyleSpec
   }
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: process.env.OPENAI_MODEL || "gpt-4o-mini",
     response_format: { type: "json_object" },
     messages: [
       {
         role: "system",
         content:
-          "너는 소상공인 홈페이지 시안 카피라이터다. 과장하지 말고, 자연스러운 한국어로 JSON만 출력한다."
+          "You are Canvers, an AI website draft planner. Return only valid JSON in Korean. Keep copy short, modern, trustworthy, and suitable for a first website draft."
       },
       {
         role: "user",
         content: JSON.stringify({
-          task: "heroSubhead, aboutTitle, aboutBody, ctaLabel, offeringsTitle, offerings를 생성",
-          rules: {
-            heroSubhead: "20-50자",
-            aboutBody: "80-150자, 2-3문장",
-            offerings: "입력된 항목을 유지하고 빈 설명은 채움"
+          requiredShape: {
+            heroSubhead: "short Korean sentence",
+            aboutTitle: "short label",
+            aboutBody: "1 short Korean sentence",
+            ctaLabel: "short CTA",
+            offeringsTitle: "short label",
+            offerings: [{ title: "string", description: "string" }],
+            sections: [
+              {
+                id: "string",
+                label: "short English label",
+                title: "short Korean title",
+                body: "1 short Korean sentence",
+                bullets: ["string"]
+              }
+            ]
           },
+          rules: [
+            "Create 3 sections only.",
+            "Use short copy to avoid clutter.",
+            "Do not invent real customer names or fake testimonials.",
+            "Reflect the selected template and key features."
+          ],
           input,
           style
         })
@@ -64,5 +75,9 @@ export async function generateContent(input: GenerateSiteInput, style: StyleSpec
     return buildMockContent(input, style.mood);
   }
 
-  return JSON.parse(content) as GeneratedContent;
+  try {
+    return JSON.parse(content) as GeneratedContent;
+  } catch {
+    return buildMockContent(input, style.mood);
+  }
 }

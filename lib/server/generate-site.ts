@@ -1,4 +1,4 @@
-import { generateContent, extractStyleFromReferenceUrls } from "@/lib/server/ai";
+import { generateContent } from "@/lib/server/ai";
 import { getSiteUrl } from "@/lib/server/env";
 import { isSlugTaken, saveGeneratedSite } from "@/lib/server/store";
 import { themePresets } from "@/lib/canvers/themes";
@@ -24,10 +24,7 @@ export async function findAvailableSlug(rawSlug: string) {
 
 export async function generateSite(input: GenerateSiteInput): Promise<GeneratedSite> {
   const slug = await findAvailableSlug(input.slug || toSlug(input.businessName));
-  const style =
-    input.track === "theme"
-      ? themePresets[input.themeKey || "soft"]
-      : await extractStyleFromReferenceUrls(input.referenceUrls || []);
+  const style = themePresets[input.themeKey || "soft"];
 
   const content = await generateContent(input, style);
   const siteUrl = getSiteUrl();
@@ -63,4 +60,12 @@ export function parseOfferingsText(value: string) {
         description: rest.join(" - ").trim() || undefined
       };
     });
+}
+
+export function parseFeatureText(value: string) {
+  return value
+    .split(/\n|,/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .slice(0, 6);
 }

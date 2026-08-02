@@ -49,7 +49,24 @@ export default function TemplatesPage() {
   const router = useRouter();
 
   function startCreating(template: string) {
-    router.push(`/create?industry=online-store&themeKey=soft&template=${template}`);
+    const themeByTemplate: Record<string, string> = {
+      editor: "editorial",
+      dashboard: "modern-business",
+      saas: "soft",
+      template: "minimal-service"
+    };
+    const navByTemplate: Record<string, string> = {
+      editor: "side",
+      dashboard: "side",
+      saas: "top",
+      template: "top"
+    };
+
+    router.push(
+      `/create?industry=online-store&themeKey=${themeByTemplate[template] || "soft"}&template=${template}&navLayout=${
+        navByTemplate[template] || "top"
+      }`
+    );
   }
 
   return (
@@ -62,7 +79,6 @@ export default function TemplatesPage() {
         <nav aria-label="주요 메뉴">
           <a href="/templates">Templates</a>
           <a href="/product">Product</a>
-          <a href="/cases">Use Case Drafts</a>
           <a href="/#about">About</a>
         </nav>
         <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating("saas")}>

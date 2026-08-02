@@ -13,37 +13,33 @@ export default async function CmsPage({ params }: { params: { slug: string } }) 
       <header className="site-header">
         <a className="brand" href={`/${site.slug}`}>
           <strong>{site.input.businessName}</strong>
-          <span>CMS</span>
+          <span>JSON</span>
         </a>
       </header>
 
       <main className="section">
         <div className="section-inner">
-          <p className="eyebrow">Content manager</p>
+          <p className="eyebrow">Saved draft</p>
           <div className="split-head">
-            <h1 className="display-title">Edit text fields.</h1>
+            <h1 className="display-title">JSON draft data.</h1>
             <p className="section-note">
-              MVP에서는 텍스트 편집 중심으로 시작합니다. 인증과 저장 API는 Supabase 연결 후 붙이면 됩니다.
+              v1에서는 DB 없이 생성 결과를 JSON 파일로 저장합니다. 이후 편집 UI와 배포 기능을 붙일 수 있습니다.
             </p>
           </div>
 
-          <form className="form-surface">
+          <div className="form-surface">
             <div className="field">
-              <label>히어로 서브헤드</label>
-              <textarea defaultValue={site.content.heroSubhead} />
+              <label>Public URL</label>
+              <input defaultValue={site.publicUrl} readOnly />
             </div>
             <div className="field">
-              <label>About 본문</label>
-              <textarea defaultValue={site.content.aboutBody} />
+              <label>Generated JSON</label>
+              <textarea rows={18} defaultValue={JSON.stringify(site, null, 2)} readOnly />
             </div>
-            <div className="field">
-              <label>CTA</label>
-              <input defaultValue={site.content.ctaLabel} />
-            </div>
-            <button className="primary-button" type="button">
-              저장 준비 중
-            </button>
-          </form>
+            <a className="primary-button" href={`/${site.slug}`}>
+              시안 보기 →
+            </a>
+          </div>
         </div>
       </main>
     </>

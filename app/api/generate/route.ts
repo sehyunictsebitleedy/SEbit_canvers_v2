@@ -9,17 +9,28 @@ const offeringSchema = z.object({
 });
 
 const generateSchema = z.object({
-  track: z.enum(["reference", "theme"]),
-  referenceUrls: z.array(z.string().url()).max(2).optional(),
-  themeKey: z.enum(["modern-business", "warm-food", "minimal-service"]).optional(),
+  track: z.literal("theme").default("theme"),
+  template: z.enum(["saas", "dashboard", "editor", "template"]).default("saas"),
+  themeKey: z.enum(["minimal", "editorial", "bold", "soft", "modern-business", "warm-food", "minimal-service"]).default("soft"),
   businessName: z.string().min(1),
   slug: z.string().optional(),
-  industry: z.enum(["food-cafe", "beauty", "professional-service", "product-workshop", "other"]),
+  industry: z.enum([
+    "food-cafe",
+    "beauty",
+    "fitness",
+    "clinic",
+    "restaurant",
+    "online-store",
+    "professional-service",
+    "product-workshop",
+    "other"
+  ]).default("online-store"),
   oneLiner: z.string().min(1),
-  offerings: z.array(offeringSchema).min(1).max(6),
-  address: z.string().optional(),
-  contact: z.string().optional(),
-  businessHours: z.string().optional()
+  targetAudience: z.string().optional(),
+  keyFeatures: z.array(z.string()).default([]),
+  visualTone: z.string().optional(),
+  offerings: z.array(offeringSchema).default([]),
+  contact: z.string().optional()
 });
 
 export async function POST(request: Request) {

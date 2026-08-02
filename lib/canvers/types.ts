@@ -1,4 +1,8 @@
-export type Track = "reference" | "theme";
+export type Track = "theme";
+
+export type TemplateKey = "saas" | "dashboard" | "editor" | "template";
+
+export type NavLayout = "top" | "side";
 
 export type Industry =
   | "food-cafe"
@@ -52,16 +56,28 @@ export type OfferingInput = {
 
 export type GenerateSiteInput = {
   track: Track;
-  referenceUrls?: string[];
+  template: TemplateKey;
+  navLayout?: NavLayout;
   themeKey?: ThemeKey;
   businessName: string;
   slug?: string;
   industry: Industry;
   oneLiner: string;
+  targetAudience?: string;
+  keyFeatures: string[];
+  visualTone?: string;
   offerings: OfferingInput[];
   address?: string;
   contact?: string;
   businessHours?: string;
+};
+
+export type GeneratedSection = {
+  id: string;
+  label: string;
+  title: string;
+  body: string;
+  bullets?: string[];
 };
 
 export type GeneratedContent = {
@@ -71,6 +87,7 @@ export type GeneratedContent = {
   ctaLabel: string;
   offeringsTitle: string;
   offerings: Required<OfferingInput>[];
+  sections: GeneratedSection[];
 };
 
 export type GeneratedSite = {
