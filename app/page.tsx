@@ -61,7 +61,7 @@ export default function HomePage() {
             <br />
             web service draft.
           </h1>
-          <p>템플릿을 선택하면 AI가 구조와 디자인을 먼저 제안합니다.</p>
+          <p>템플릿을 선택하면 AI가 Nuxt 스타일의 페이지 구조와 디자인을 먼저 제안합니다.</p>
           <div className="cv2-actions">
             <button className="cv2-button cv2-button-dark cv2-button-large" type="button" onClick={() => startCreating()}>
               시안 만들기 시작하기
@@ -160,14 +160,14 @@ export default function HomePage() {
             템플릿 선택이
             <br />더 쉬워집니다
           </h2>
-          <p>목적에 맞는 템플릿을 고르고, AI가 구조와 콘텐츠를 제안해 드립니다.</p>
+          <p>목적에 맞는 템플릿을 고르면, AI가 Nuxt 스타일의 레이아웃 구조와 콘텐츠 흐름을 제안합니다.</p>
         </div>
         <div className="cv2-value-list">
           <article>
             <span className="cv2-glyph cv2-glyph-cubes" aria-hidden="true">IA</span>
             <div>
               <h3>Clear structure</h3>
-              <p>검증된 구조를 기반으로 필요한 섹션을 자동으로 구성합니다.</p>
+              <p>Nuxt 스타일의 페이지, 레이아웃, 섹션 구조를 기준으로 필요한 블록을 자동 구성합니다.</p>
             </div>
             <b>›</b>
           </article>
@@ -193,7 +193,7 @@ export default function HomePage() {
           <p>
             AI가 목적과 내용을 이해하고
             <br />
-            최적의 페이지 구조를 제안합니다.
+            Nuxt 스타일의 페이지 구조를 제안합니다.
           </p>
         </div>
         <div className="cv2-dark-preview">
@@ -302,7 +302,7 @@ export default function HomePage() {
             <br />
             첫 시안을 만들어보세요.
           </h2>
-          <p>AI가 구조와 디자인을 제안하고, 팀이 함께 완성합니다.</p>
+          <p>AI가 Nuxt 스타일 구조와 디자인을 제안하고, 팀이 함께 완성합니다.</p>
         </div>
         <button className="cv2-button cv2-button-dark cv2-button-large" type="button" onClick={() => startCreating()}>
           무료로 시작하기

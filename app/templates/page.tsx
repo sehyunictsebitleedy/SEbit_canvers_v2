@@ -95,7 +95,7 @@ export default function TemplatesPage() {
         </h1>
         <p>
           Editor, Dashboard, SaaS, Template 중 목적에 가까운 유형을 선택하면
-          Canvers가 구조와 디자인 흐름을 먼저 제안합니다.
+          Canvers가 Nuxt 스타일의 페이지 구조와 디자인 흐름을 먼저 제안합니다.
         </p>
       </section>
 
@@ -128,7 +128,7 @@ export default function TemplatesPage() {
         <div>
           <span className="cv2-cta-kicker">Not sure yet?</span>
           <h2>아직 모르겠다면 SaaS 템플릿으로 시작해보세요.</h2>
-          <p>가장 범용적인 서비스 소개 구조로 먼저 만들고, 이후 목적에 맞게 수정할 수 있습니다.</p>
+          <p>가장 범용적인 Nuxt 스타일 서비스 소개 구조로 먼저 만들고, 이후 목적에 맞게 수정할 수 있습니다.</p>
         </div>
         <button className="cv2-button cv2-button-large template-create-button dark" type="button" onClick={() => startCreating("saas")}>
           추천 시안 만들기
