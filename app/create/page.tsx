@@ -39,7 +39,7 @@ export default function CreatePage({
   const navLayout = searchParams.navLayout === "side" ? "side" : "top";
 
   return (
-    <>
+    <div className="create-page">
       <header className="site-header">
         <a className="brand" href="/">
           <strong>Canvers.</strong>
@@ -167,6 +167,6 @@ export default function CreatePage({
           </form>
         </div>
       </main>
-    </>
+    </div>
   );
 }
