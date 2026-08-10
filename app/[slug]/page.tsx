@@ -77,12 +77,19 @@ export default async function PublicSitePage({ params }: { params: { slug: strin
 
   const template = site.input.template;
   const navLayout = site.input.navLayout || "top";
+  const guide = {
+    brandTone: site.designGuide?.brandTone || "friendly-ai",
+    sectionDensity: site.designGuide?.sectionDensity || "balanced",
+    ctaStyle: site.designGuide?.ctaStyle || "solid",
+    componentStyle: site.designGuide?.componentStyle || "cards",
+    layoutRules: site.designGuide?.layoutRules || "Nuxt-style page structure with reusable sections."
+  };
   const meta = templateMeta[template];
   const headingFont = site.style.fonts.heading === "serif" ? "Georgia, serif" : "system-ui, sans-serif";
 
   return (
     <main
-      className={`site-preview generated-draft generated-${template} generated-nav-${navLayout}`}
+      className={`site-preview generated-draft generated-${template} generated-nav-${navLayout} generated-density-${guide.sectionDensity} generated-cta-${guide.ctaStyle} generated-components-${guide.componentStyle}`}
       style={
         {
           "--site-bg": site.style.palette.bg,
@@ -124,6 +131,12 @@ export default async function PublicSitePage({ params }: { params: { slug: strin
         <section className="site-section generated-about">
           <p className="eyebrow">{site.content.aboutTitle}</p>
           <p className="lead">{site.content.aboutBody}</p>
+          <div className="generated-system-summary">
+            <span>{guide.brandTone}</span>
+            <span>{guide.sectionDensity} density</span>
+            <span>{guide.componentStyle} components</span>
+            <p>{guide.layoutRules}</p>
+          </div>
         </section>
 
         <section className="site-section generated-offerings" id="sections">

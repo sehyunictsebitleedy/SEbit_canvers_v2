@@ -11,6 +11,10 @@
 - 디자인 가이드에서도 내비게이션 위치를 다시 변경하고 JSON에 저장할 수 있습니다.
 - `/cases` 페이지와 메뉴를 제거하고, 필요한 메뉴 중심으로 내비게이션을 단순화했습니다.
 - OpenAI quota 문제가 있을 때도 테스트할 수 있도록 JSON 저장형 mock draft 흐름을 정리했습니다.
+- Open Design은 직접 API 연동이 아니라 디자인 시스템/워크플로우 참고용으로 활용하기로 정리했습니다.
+- `/[slug]/guide`를 단순 수정 폼에서 디자인 시스템 편집 화면으로 확장했습니다.
+- 디자인 가이드에 Brand tone, Layout rules, Section density, CTA style, Component style, Design notes 항목을 추가했습니다.
+- 디자인 가이드에서 저장한 density, CTA, component style 값이 생성 시안 미리보기에 반영되도록 연결했습니다.
 
 Canvers v2는 **Editor, Dashboard, SaaS, Template 형태의 웹서비스 시안**을 빠르게 생성하고 다듬기 위한 AI 기반 시안 제작 MVP입니다.
 
@@ -31,6 +35,7 @@ Canvers v2는 **Editor, Dashboard, SaaS, Template 형태의 웹서비스 시안*
 - 템플릿 선택 후 AI가 Nuxt 스타일 구조와 문구를 먼저 제안하는 흐름
 - DB 없이 JSON 파일로 생성 결과 저장
 - 생성된 시안을 디자인 가이드 페이지에서 다시 수정
+- Open Design식 디자인 시스템 워크플로우를 참고하되, Canvers 자체 JSON 생성 구조 유지
 - 불필요한 메뉴를 늘리지 않고 `Templates`, `Product`, `About` 중심으로 구성
 
 ## 메인 카피
@@ -92,6 +97,12 @@ Start
 
 현재 수정 가능한 항목은 다음과 같습니다.
 
+- 브랜드 톤
+- 레이아웃 규칙
+- 섹션 밀도
+- CTA 스타일
+- 컴포넌트 스타일
+- 디자인 메모
 - 배경색
 - 텍스트 컬러
 - 포인트 컬러

@@ -4,16 +4,16 @@ import { updateDesignGuide } from "./actions";
 
 const toneGuides = [
   {
-    title: "Trust first",
-    body: "본문은 짧게, 숫자와 결과는 선명하게 두면 신뢰감이 올라갑니다."
+    title: "Design system first",
+    body: "Define tone, layout rules, density, CTA behavior, and component style before rewriting details."
   },
   {
-    title: "Text first",
-    body: "큰 장식보다 핵심 문장과 섹션 이름이 먼저 보이도록 정리합니다."
+    title: "Nuxt-style structure",
+    body: "Think in page, layout, section, and component layers so the draft can become a real web service."
   },
   {
-    title: "Friendly AI",
-    body: "명령형보다 도와주는 톤을 쓰면 AI 서비스의 부담감이 줄어듭니다."
+    title: "Local JSON workflow",
+    body: "Every guide setting is saved into the draft JSON, so the preview and editable system stay together."
   }
 ];
 
@@ -23,6 +23,18 @@ const paletteHints = [
   { label: "Accent", name: "accent" }
 ];
 
+function fallbackDesignGuide(site: NonNullable<Awaited<ReturnType<typeof getSiteBySlug>>>) {
+  return {
+    brandTone: site.designGuide?.brandTone || "friendly-ai",
+    layoutRules:
+      site.designGuide?.layoutRules || "Use a Nuxt-style page structure with clear layout hierarchy and reusable sections.",
+    sectionDensity: site.designGuide?.sectionDensity || "balanced",
+    ctaStyle: site.designGuide?.ctaStyle || "solid",
+    componentStyle: site.designGuide?.componentStyle || "cards",
+    designNotes: site.designGuide?.designNotes || "Keep the draft clear, credible, and easy to refine."
+  };
+}
+
 export default async function DesignGuidePage({ params }: { params: { slug: string } }) {
   const site = await getSiteBySlug(params.slug);
 
@@ -30,6 +42,7 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
     notFound();
   }
 
+  const guide = fallbackDesignGuide(site);
   const action = updateDesignGuide.bind(null, site.slug);
 
   return (
@@ -37,7 +50,7 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
       <header className="site-header guide-header">
         <a className="brand" href={`/${site.slug}`}>
           <strong>{site.input.businessName}</strong>
-          <span>Guide</span>
+          <span>Design System</span>
         </a>
         <nav>
           <a href={`/${site.slug}`}>Preview</a>
@@ -48,12 +61,12 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
       <main className="guide-page">
         <section className="guide-hero">
           <div>
-            <p className="guide-kicker">Design Guide</p>
-            <h1>생성된 시안을 더 좋은 방향으로 다듬어요.</h1>
+            <p className="guide-kicker">Canvers Design Guide</p>
+            <h1>Turn this draft into a reusable design system.</h1>
           </div>
           <p>
-            컬러, 타이포, 주요 문구, 섹션 메시지를 한 곳에서 정리합니다.
-            저장하면 JSON 시안에 바로 반영됩니다.
+            Open Design is used as workflow inspiration, not as a direct API dependency. Canvers keeps the AI generation
+            flow local to this project and stores the design rules in JSON.
           </p>
         </section>
 
@@ -63,17 +76,22 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
               <span>Current draft</span>
               <h2>{site.input.businessName}</h2>
               <p>{site.input.oneLiner}</p>
+              <div className="guide-system-chips">
+                <b>{site.input.template}</b>
+                <b>{site.input.navLayout || "top"} nav</b>
+                <b>{guide.sectionDensity}</b>
+              </div>
               <a className="template-create-button button button-small" href={`/${site.slug}`}>
-                미리보기 <span>→</span>
+                Preview <span>→</span>
               </a>
             </div>
 
             <div className="guide-panel subtle">
-              <span>Guide principles</span>
-              {toneGuides.map((guide) => (
-                <article key={guide.title}>
-                  <strong>{guide.title}</strong>
-                  <p>{guide.body}</p>
+              <span>Workflow principles</span>
+              {toneGuides.map((item) => (
+                <article key={item.title}>
+                  <strong>{item.title}</strong>
+                  <p>{item.body}</p>
                 </article>
               ))}
             </div>
@@ -84,8 +102,67 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
               <div className="guide-section-head">
                 <span>01</span>
                 <div>
-                  <h2>Style system</h2>
-                  <p>전체 인상을 결정하는 기본 스타일입니다.</p>
+                  <h2>System rules</h2>
+                  <p>Set the design rules that shape the generated preview.</p>
+                </div>
+              </div>
+
+              <div className="form-grid">
+                <label className="field">
+                  <span>Brand tone</span>
+                  <select name="brandTone" defaultValue={guide.brandTone}>
+                    <option value="friendly-ai">Friendly AI</option>
+                    <option value="trust-first">Trust first</option>
+                    <option value="text-first">Text first</option>
+                    <option value="technical">Technical</option>
+                  </select>
+                </label>
+                <label className="field">
+                  <span>Section density</span>
+                  <select name="sectionDensity" defaultValue={guide.sectionDensity}>
+                    <option value="compact">Compact</option>
+                    <option value="balanced">Balanced</option>
+                    <option value="spacious">Spacious</option>
+                  </select>
+                </label>
+              </div>
+
+              <div className="form-grid">
+                <label className="field">
+                  <span>CTA style</span>
+                  <select name="ctaStyle" defaultValue={guide.ctaStyle}>
+                    <option value="solid">Solid</option>
+                    <option value="soft">Soft</option>
+                    <option value="minimal">Minimal</option>
+                  </select>
+                </label>
+                <label className="field">
+                  <span>Component style</span>
+                  <select name="componentStyle" defaultValue={guide.componentStyle}>
+                    <option value="cards">Cards</option>
+                    <option value="lines">Lines</option>
+                    <option value="bento">Bento</option>
+                  </select>
+                </label>
+              </div>
+
+              <label className="field">
+                <span>Layout rules</span>
+                <textarea name="layoutRules" rows={4} defaultValue={guide.layoutRules} />
+              </label>
+
+              <label className="field">
+                <span>Design notes</span>
+                <textarea name="designNotes" rows={4} defaultValue={guide.designNotes} />
+              </label>
+            </section>
+
+            <section className="guide-editor-section">
+              <div className="guide-section-head">
+                <span>02</span>
+                <div>
+                  <h2>Visual tokens</h2>
+                  <p>Control color, type direction, radius, and navigation placement.</p>
                 </div>
               </div>
 
@@ -126,12 +203,12 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
                   <label className="nav-layout-card">
                     <input name="navLayout" type="radio" value="top" defaultChecked={(site.input.navLayout || "top") === "top"} />
                     <span>Top navigation</span>
-                    <small>브랜드 랜딩이나 SaaS 소개 페이지처럼 상단 메뉴가 먼저 보입니다.</small>
+                    <small>Best for landing pages, SaaS introductions, and brand-led pages.</small>
                   </label>
                   <label className="nav-layout-card">
                     <input name="navLayout" type="radio" value="side" defaultChecked={site.input.navLayout === "side"} />
                     <span>Left side navigation</span>
-                    <small>에디터, 대시보드, 툴형 서비스처럼 왼쪽 메뉴 중심으로 보입니다.</small>
+                    <small>Best for editor, dashboard, and tool-like service drafts.</small>
                   </label>
                 </div>
               </div>
@@ -139,10 +216,10 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
 
             <section className="guide-editor-section">
               <div className="guide-section-head">
-                <span>02</span>
+                <span>03</span>
                 <div>
                   <h2>Hero and story</h2>
-                  <p>첫 화면에서 바로 이해되는 문장으로 줄입니다.</p>
+                  <p>Keep the first screen clear enough to understand at a glance.</p>
                 </div>
               </div>
 
@@ -168,10 +245,10 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
 
             <section className="guide-editor-section">
               <div className="guide-section-head">
-                <span>03</span>
+                <span>04</span>
                 <div>
                   <h2>Section copy</h2>
-                  <p>각 단락의 역할을 짧고 명확하게 조정합니다.</p>
+                  <p>Refine each section so the structure and message stay aligned.</p>
                 </div>
               </div>
 
@@ -206,9 +283,9 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
             </section>
 
             <div className="guide-save-bar">
-              <p>저장하면 생성 시안과 JSON 데이터가 함께 업데이트됩니다.</p>
+              <p>Saving updates the generated preview and the JSON design guide block.</p>
               <button className="template-create-button button button-large" type="submit">
-                가이드 저장하기 <span>→</span>
+                Save design system <span>→</span>
               </button>
             </div>
           </form>

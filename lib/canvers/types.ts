@@ -4,6 +4,14 @@ export type TemplateKey = "saas" | "dashboard" | "editor" | "template";
 
 export type NavLayout = "top" | "side";
 
+export type BrandTone = "trust-first" | "text-first" | "friendly-ai" | "technical";
+
+export type SectionDensity = "compact" | "balanced" | "spacious";
+
+export type CtaStyle = "solid" | "soft" | "minimal";
+
+export type ComponentStyle = "cards" | "lines" | "bento";
+
 export type Industry =
   | "food-cafe"
   | "beauty"
@@ -90,11 +98,21 @@ export type GeneratedContent = {
   sections: GeneratedSection[];
 };
 
+export type DesignGuideSystem = {
+  brandTone: BrandTone;
+  layoutRules: string;
+  sectionDensity: SectionDensity;
+  ctaStyle: CtaStyle;
+  componentStyle: ComponentStyle;
+  designNotes?: string;
+};
+
 export type GeneratedSite = {
   id: string;
   slug: string;
   style: StyleSpec;
   content: GeneratedContent;
+  designGuide?: DesignGuideSystem;
   input: GenerateSiteInput;
   publicUrl: string;
   cmsUrl: string;

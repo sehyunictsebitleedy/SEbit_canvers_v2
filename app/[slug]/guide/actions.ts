@@ -2,7 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { GeneratedSite, NavLayout, StyleSpec } from "@/lib/canvers/types";
+import type {
+  BrandTone,
+  ComponentStyle,
+  CtaStyle,
+  GeneratedSite,
+  NavLayout,
+  SectionDensity,
+  StyleSpec
+} from "@/lib/canvers/types";
 import { updateGeneratedSite } from "@/lib/server/store";
 
 function stringValue(formData: FormData, key: string, fallback = "") {
@@ -24,6 +32,38 @@ function selectHeading(value: string): StyleSpec["fonts"]["heading"] {
 
 function selectNavLayout(value: string): NavLayout {
   return value === "side" ? "side" : "top";
+}
+
+function selectBrandTone(value: string): BrandTone {
+  if (value === "trust-first" || value === "text-first" || value === "friendly-ai" || value === "technical") {
+    return value;
+  }
+
+  return "friendly-ai";
+}
+
+function selectSectionDensity(value: string): SectionDensity {
+  if (value === "compact" || value === "balanced" || value === "spacious") {
+    return value;
+  }
+
+  return "balanced";
+}
+
+function selectCtaStyle(value: string): CtaStyle {
+  if (value === "solid" || value === "soft" || value === "minimal") {
+    return value;
+  }
+
+  return "solid";
+}
+
+function selectComponentStyle(value: string): ComponentStyle {
+  if (value === "cards" || value === "lines" || value === "bento") {
+    return value;
+  }
+
+  return "cards";
 }
 
 function parseBullets(value: string) {
@@ -52,6 +92,18 @@ function updateSections(site: GeneratedSite, formData: FormData) {
 export async function updateDesignGuide(slug: string, formData: FormData) {
   const updated = await updateGeneratedSite(slug, (site) => ({
     ...site,
+    designGuide: {
+      brandTone: selectBrandTone(stringValue(formData, "brandTone", site.designGuide?.brandTone || "friendly-ai")),
+      layoutRules: stringValue(
+        formData,
+        "layoutRules",
+        site.designGuide?.layoutRules || "Use a Nuxt-style page structure with clear layout hierarchy."
+      ),
+      sectionDensity: selectSectionDensity(stringValue(formData, "sectionDensity", site.designGuide?.sectionDensity || "balanced")),
+      ctaStyle: selectCtaStyle(stringValue(formData, "ctaStyle", site.designGuide?.ctaStyle || "solid")),
+      componentStyle: selectComponentStyle(stringValue(formData, "componentStyle", site.designGuide?.componentStyle || "cards")),
+      designNotes: stringValue(formData, "designNotes", site.designGuide?.designNotes || "")
+    },
     input: {
       ...site.input,
       navLayout: selectNavLayout(stringValue(formData, "navLayout", site.input.navLayout || "top"))

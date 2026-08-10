@@ -359,6 +359,70 @@ a { color: inherit; text-decoration: none; }
 .offer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .offer-card { padding: 20px; border: 1px solid color-mix(in srgb, var(--site-text), transparent 70%); border-radius: var(--site-radius); }
 
+.generated-density-compact .site-section {
+  margin-top: 58px;
+  padding-top: 22px;
+}
+
+.generated-density-spacious .site-section {
+  margin-top: 124px;
+  padding-top: 42px;
+}
+
+.generated-cta-soft .primary-button {
+  color: var(--site-text);
+  background: color-mix(in srgb, var(--site-accent), var(--site-bg) 68%);
+  border: 1px solid color-mix(in srgb, var(--site-accent), transparent 34%);
+}
+
+.generated-cta-minimal .primary-button {
+  color: var(--site-text);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--site-text), transparent 54%);
+}
+
+.generated-components-lines .offer-card {
+  padding: 22px 0;
+  border-width: 1px 0 0;
+  border-radius: 0;
+}
+
+.generated-components-bento .offer-grid {
+  grid-template-columns: 1.2fr 0.8fr 1fr;
+}
+
+.generated-components-bento .offer-card:first-child {
+  grid-row: span 2;
+  min-height: 220px;
+  background: color-mix(in srgb, var(--site-accent), var(--site-bg) 82%);
+}
+
+.generated-system-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 780px;
+  margin-top: 26px;
+}
+
+.generated-system-summary span {
+  padding: 9px 12px;
+  color: var(--site-text);
+  background: color-mix(in srgb, var(--site-accent), transparent 82%);
+  border: 1px solid color-mix(in srgb, var(--site-text), transparent 82%);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.generated-system-summary p {
+  flex-basis: 100%;
+  margin: 4px 0 0;
+  color: color-mix(in srgb, var(--site-text), transparent 34%);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
 .generated-draft header nav {
   display: flex;
   gap: 14px;
@@ -800,6 +864,22 @@ a { color: inherit; text-decoration: none; }
   margin: 0 0 18px;
   color: #62656d;
   line-height: 1.62;
+}
+
+.guide-system-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 20px;
+}
+
+.guide-system-chips b {
+  padding: 8px 10px;
+  color: #27340f;
+  background: rgba(185, 241, 122, 0.34);
+  border: 1px solid rgba(23, 24, 28, 0.08);
+  border-radius: 999px;
+  font-size: 12px;
 }
 
 .guide-panel.subtle {
