@@ -48,9 +48,9 @@ export default function HomePage() {
           <a href="/product">Product</a>
           <a href="#about">About</a>
         </nav>
-        <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating()}>
+        <a className="cv2-button cv2-button-dark" href="/create?industry=online-store&themeKey=soft&template=saas">
           Start
-        </button>
+        </a>
       </header>
 
       <section className="cv2-hero" id="top">
@@ -63,10 +63,10 @@ export default function HomePage() {
           </h1>
           <p>템플릿을 선택하면 AI가 Nuxt 스타일의 페이지 구조와 디자인을 먼저 제안합니다.</p>
           <div className="cv2-actions">
-            <button className="cv2-button cv2-button-dark cv2-button-large" type="button" onClick={() => startCreating()}>
+            <a className="cv2-button cv2-button-dark cv2-button-large" href="/create?industry=online-store&themeKey=soft&template=saas">
               시안 만들기 시작하기
               <span>→</span>
-            </button>
+            </a>
             <a className="cv2-button cv2-button-light cv2-button-large" href="#flow">
               작동 방식 보기
             </a>
@@ -304,10 +304,10 @@ export default function HomePage() {
           </h2>
           <p>AI가 Nuxt 스타일 구조와 디자인을 제안하고, 팀이 함께 완성합니다.</p>
         </div>
-        <button className="cv2-button cv2-button-dark cv2-button-large" type="button" onClick={() => startCreating()}>
+        <a className="cv2-button cv2-button-dark cv2-button-large" href="/create?industry=online-store&themeKey=soft&template=saas">
           무료로 시작하기
           <span>→</span>
-        </button>
+        </a>
       </section>
 
       <footer className="cv2-footer" id="about">
