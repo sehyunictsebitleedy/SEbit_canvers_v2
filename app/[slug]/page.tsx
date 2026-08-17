@@ -212,6 +212,7 @@ function SaasLayout({ site }: { site: GeneratedSite }) {
 
 function DashboardLayout({ site }: { site: GeneratedSite }) {
   const firstSections = site.content.sections.slice(0, 3);
+  const chartTypes = site.input.chartTypes?.length ? site.input.chartTypes : ["line", "bar"];
 
   return (
     <PreviewShell site={{ ...site, input: { ...site.input, navLayout: site.input.navLayout || "side" } }}>
@@ -240,7 +241,19 @@ function DashboardLayout({ site }: { site: GeneratedSite }) {
           <div className="dashboard-panel large">
             <p className="eyebrow">{site.content.aboutTitle}</p>
             <h2>{site.content.aboutBody}</h2>
-            <SystemSummary site={site} />
+            <div className="dashboard-chart-grid">
+              {chartTypes.map((chartType) => (
+                <article className={`dashboard-chart dashboard-chart-${chartType}`} key={chartType}>
+                  <div className="dashboard-chart-head">
+                    <span>{chartType === "donut" ? "Distribution" : chartType === "bar" ? "Performance" : chartType === "area" ? "Volume" : "Growth"}</span>
+                    <strong>{chartType}</strong>
+                  </div>
+                  <div className="dashboard-chart-visual" aria-label={`${chartType} chart preview`} role="img">
+                    <i /><i /><i /><i /><i /><i />
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
           <div className="dashboard-panel">
             <p className="eyebrow">{site.content.offeringsTitle}</p>

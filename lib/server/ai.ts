@@ -61,7 +61,8 @@ export async function generateContent(input: GenerateSiteInput, style: StyleSpec
             "Create 3 sections only.",
             "Use short copy to avoid clutter.",
             "Do not invent real customer names or fake testimonials.",
-            "Reflect the selected template and key features."
+            "Reflect the selected template and key features.",
+            "For dashboard templates, reflect the selected chartTypes in the section plan."
           ],
           input,
           style

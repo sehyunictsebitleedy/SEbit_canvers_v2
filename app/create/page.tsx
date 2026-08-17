@@ -1,4 +1,5 @@
 import { generateSiteAction } from "./actions";
+import { DashboardOptions } from "./dashboard-options";
 
 const templateLabels: Record<string, string> = {
   saas: "SaaS",
@@ -68,28 +69,12 @@ export default function CreatePage({
             <input type="hidden" name="track" value="theme" />
             <input type="hidden" name="industry" value="online-store" />
 
-            <div className="form-grid">
-              <div className="field">
-                <label htmlFor="template">Template</label>
-                <select id="template" name="template" defaultValue={template}>
-                  {Object.entries(templateLabels).map(([value, label]) => (
-                    <option value={value} key={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="field">
-                <label htmlFor="themeKey">Style</label>
-                <select id="themeKey" name="themeKey" defaultValue={themeKey}>
-                  {Object.entries(themeLabels).map(([value, label]) => (
-                    <option value={value} key={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+            <DashboardOptions
+              template={template}
+              themeKey={themeKey}
+              templateLabels={templateLabels}
+              themeLabels={themeLabels}
+            />
 
             <div className="field">
               <label>Navigation layout</label>

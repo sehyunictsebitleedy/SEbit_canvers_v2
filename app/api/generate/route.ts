@@ -11,6 +11,7 @@ const offeringSchema = z.object({
 const generateSchema = z.object({
   track: z.literal("theme").default("theme"),
   template: z.enum(["saas", "dashboard", "editor", "template"]).default("saas"),
+  chartTypes: z.array(z.enum(["line", "bar", "area", "donut"])).max(4).optional(),
   themeKey: z.enum(["minimal", "editorial", "bold", "soft", "modern-business", "warm-food", "minimal-service"]).default("soft"),
   businessName: z.string().min(1),
   slug: z.string().optional(),

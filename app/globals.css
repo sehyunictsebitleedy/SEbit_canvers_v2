@@ -17,6 +17,53 @@
   --display-font: "Space Grotesk", "Pretendard", sans-serif;
 }
 
+/* Dashboard chart selection */
+.dashboard-chart-field { min-width: 0; padding: 0; border: 0; }
+.dashboard-chart-field legend { margin-bottom: 6px; color: #17181c; font-size: 14px; font-weight: 800; }
+.field-hint { margin: 0 0 14px; color: #62656d; font-size: 13px; line-height: 1.5; }
+.chart-type-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.chart-type-card { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 5px 10px; min-width: 0; padding: 16px; background: #fffef9; border: 1px solid rgba(23, 24, 28, 0.14); border-radius: 14px; cursor: pointer; transition: border-color 0.2s var(--motion-ease), box-shadow 0.2s var(--motion-ease), transform 0.2s var(--motion-ease); }
+.chart-type-card:hover { transform: translateY(-2px); }
+.chart-type-card:has(input:checked) { border-color: rgba(126, 190, 55, 0.8); box-shadow: 0 0 0 4px rgba(185, 241, 122, 0.2); }
+.chart-type-card input { width: 18px; height: 18px; margin: 1px 0 0; accent-color: #17181c; }
+.chart-type-card strong, .chart-type-card small { grid-column: 2; }
+.chart-type-card strong { color: #17181c; font-size: 14px; }
+.chart-type-card small { color: #62656d; font-size: 11px; line-height: 1.4; }
+.chart-option-preview { grid-column: 1 / -1; display: flex; align-items: flex-end; gap: 5px; height: 42px; padding: 8px; overflow: hidden; background: #f2f3ee; border-radius: 8px; }
+.chart-option-preview i { flex: 1; height: 45%; background: #a8cb78; border-radius: 3px 3px 1px 1px; }
+.chart-option-preview i:nth-child(2) { height: 72%; }
+.chart-option-preview i:nth-child(3) { height: 55%; }
+.chart-option-preview i:nth-child(4) { height: 88%; }
+.chart-option-line i, .chart-option-area i { width: 25%; transform: skewY(-12deg); border-radius: 2px; }
+.chart-option-donut { align-items: center; justify-content: center; }
+.chart-option-donut i { display: none; }
+.chart-option-donut::before { width: 27px; height: 27px; content: ""; border: 8px solid #a8cb78; border-right-color: #d9dfcf; border-radius: 50%; }
+
+.dashboard-chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 30px; }
+.dashboard-chart { min-width: 0; padding: 18px; background: color-mix(in srgb, var(--site-bg), var(--site-text) 2%); border: 1px solid color-mix(in srgb, var(--site-text), transparent 84%); border-radius: var(--site-radius); }
+.dashboard-chart-head { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 22px; font-size: 12px; }
+.dashboard-chart-head strong { text-transform: capitalize; }
+.dashboard-chart-visual { display: flex; align-items: flex-end; gap: 7px; height: 116px; overflow: hidden; }
+.dashboard-chart-visual i { flex: 1; height: 36%; background: color-mix(in srgb, var(--site-accent), var(--site-bg) 24%); border-radius: 5px 5px 2px 2px; }
+.dashboard-chart-visual i:nth-child(2) { height: 58%; }
+.dashboard-chart-visual i:nth-child(3) { height: 46%; }
+.dashboard-chart-visual i:nth-child(4) { height: 76%; }
+.dashboard-chart-visual i:nth-child(5) { height: 68%; }
+.dashboard-chart-visual i:nth-child(6) { height: 92%; }
+.dashboard-chart-line .dashboard-chart-visual i { transform: skewY(-12deg); border-radius: 2px; }
+.dashboard-chart-area .dashboard-chart-visual i { margin-right: -8px; transform: skewY(-8deg); opacity: 0.78; border-radius: 2px 2px 0 0; }
+.dashboard-chart-donut .dashboard-chart-visual { align-items: center; justify-content: center; }
+.dashboard-chart-donut .dashboard-chart-visual i { display: none; }
+.dashboard-chart-donut .dashboard-chart-visual::before { width: 76px; height: 76px; content: ""; border: 22px solid var(--site-accent); border-right-color: color-mix(in srgb, var(--site-accent), var(--site-bg) 72%); border-bottom-color: color-mix(in srgb, var(--site-accent), var(--site-bg) 48%); border-radius: 50%; }
+
+@media (max-width: 760px) {
+  .chart-type-options, .dashboard-chart-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 440px) {
+  .chart-type-options, .dashboard-chart-grid { grid-template-columns: 1fr; }
+}
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {

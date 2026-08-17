@@ -2,12 +2,13 @@
 
 import { redirect } from "next/navigation";
 import { generateSite, parseFeatureText, parseOfferingsText } from "@/lib/server/generate-site";
-import type { GenerateSiteInput, Industry, NavLayout, TemplateKey, ThemeKey } from "@/lib/canvers/types";
+import type { DashboardChartType, GenerateSiteInput, Industry, NavLayout, TemplateKey, ThemeKey } from "@/lib/canvers/types";
 
 export async function generateSiteAction(formData: FormData) {
   const input: GenerateSiteInput = {
     track: "theme",
     template: String(formData.get("template") || "saas") as TemplateKey,
+    chartTypes: formData.getAll("chartTypes").map(String) as DashboardChartType[],
     navLayout: String(formData.get("navLayout") || "top") as NavLayout,
     themeKey: String(formData.get("themeKey") || "soft") as ThemeKey,
     businessName: String(formData.get("businessName") || "").trim(),

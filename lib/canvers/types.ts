@@ -4,6 +4,8 @@ export type TemplateKey = "saas" | "dashboard" | "editor" | "template";
 
 export type NavLayout = "top" | "side";
 
+export type DashboardChartType = "line" | "bar" | "area" | "donut";
+
 export type BrandTone = "trust-first" | "text-first" | "friendly-ai" | "technical";
 
 export type SectionDensity = "compact" | "balanced" | "spacious";
@@ -66,6 +68,7 @@ export type GenerateSiteInput = {
   track: Track;
   template: TemplateKey;
   navLayout?: NavLayout;
+  chartTypes?: DashboardChartType[];
   themeKey?: ThemeKey;
   businessName: string;
   slug?: string;
