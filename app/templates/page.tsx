@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 const templates = [
   {
     key: "editor",
@@ -46,27 +44,9 @@ const templates = [
 ];
 
 export default function TemplatesPage() {
-  const router = useRouter();
-
   function startCreating(template: string) {
-    const themeByTemplate: Record<string, string> = {
-      editor: "editorial",
-      dashboard: "modern-business",
-      saas: "soft",
-      template: "minimal-service"
-    };
-    const navByTemplate: Record<string, string> = {
-      editor: "side",
-      dashboard: "side",
-      saas: "top",
-      template: "top"
-    };
-
-    router.push(
-      `/create?industry=online-store&themeKey=${themeByTemplate[template] || "soft"}&template=${template}&navLayout=${
-        navByTemplate[template] || "top"
-      }`
-    );
+    void template;
+    window.alert("준비 중입니다.");
   }
 
   return (

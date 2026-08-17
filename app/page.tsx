@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 const templateCards = [
   {
     type: "SaaS",
@@ -30,10 +28,9 @@ const cases = [
 ];
 
 export default function HomePage() {
-  const router = useRouter();
-
   function startCreating(template = "saas") {
-    router.push(`/create?industry=online-store&themeKey=soft&template=${template}`);
+    void template;
+    window.alert("준비 중입니다.");
   }
 
   return (
@@ -48,7 +45,7 @@ export default function HomePage() {
           <a href="/product">Product</a>
           <a href="#about">About</a>
         </nav>
-        <a className="cv2-button cv2-button-dark" href="/create?industry=online-store&themeKey=soft&template=saas">
+        <a className="cv2-button cv2-button-dark" href="/create?industry=online-store&themeKey=soft&template=saas" onClick={(event) => { event.preventDefault(); startCreating(); }}>
           Start
         </a>
       </header>
@@ -63,7 +60,7 @@ export default function HomePage() {
           </h1>
           <p>템플릿을 선택하면 AI가 Nuxt 스타일의 페이지 구조와 디자인을 먼저 제안합니다.</p>
           <div className="cv2-actions">
-            <a className="cv2-button cv2-button-dark cv2-button-large" href="/create?industry=online-store&themeKey=soft&template=saas">
+            <a className="cv2-button cv2-button-dark cv2-button-large" href="/create?industry=online-store&themeKey=soft&template=saas" onClick={(event) => { event.preventDefault(); startCreating(); }}>
               시안 만들기 시작하기
               <span>→</span>
             </a>
@@ -304,7 +301,7 @@ export default function HomePage() {
           </h2>
           <p>AI가 Nuxt 스타일 구조와 디자인을 제안하고, 팀이 함께 완성합니다.</p>
         </div>
-        <a className="cv2-button cv2-button-dark cv2-button-large" href="/create?industry=online-store&themeKey=soft&template=saas">
+        <a className="cv2-button cv2-button-dark cv2-button-large" href="/create?industry=online-store&themeKey=soft&template=saas" onClick={(event) => { event.preventDefault(); startCreating(); }}>
           무료로 시작하기
           <span>→</span>
         </a>

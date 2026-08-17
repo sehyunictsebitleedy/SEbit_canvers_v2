@@ -221,26 +221,34 @@ function DashboardLayout({ site }: { site: GeneratedSite }) {
         <section className="dashboard-topline">
           <div>
             <p className="eyebrow">Dashboard draft</p>
-            <h1>{site.input.businessName}</h1>
-            <p>{site.content.heroSubhead}</p>
+            <h1>Overview</h1>
+            <p>{site.input.businessName} performance at a glance</p>
           </div>
-          <HeroActions site={site} />
+          <div className="dashboard-toolbar">
+            <span>Last 30 days</span>
+            <a href="#sections">Filter</a>
+          </div>
         </section>
 
         <section className="dashboard-metrics" id="sections">
-          {["Active users", "Conversion", "Revenue", "Tasks"].map((label, index) => (
+          {["Total revenue", "New customers", "Orders", "Conversion rate"].map((label, index) => (
             <article key={label}>
               <span>{label}</span>
-              <strong>{index === 1 ? "67%" : index === 2 ? "$24.5K" : index === 3 ? "128" : "8,427"}</strong>
-              <i />
+              <strong>{index === 0 ? "$24.5K" : index === 1 ? "1,284" : index === 2 ? "8,427" : "67%"}</strong>
+              <div className="dashboard-metric-trend">
+                <b>↑ {index === 1 ? "8.2%" : index === 3 ? "6.1%" : "12.5%"}</b>
+                <i />
+              </div>
             </article>
           ))}
         </section>
 
         <section className="dashboard-workspace">
           <div className="dashboard-panel large">
-            <p className="eyebrow">{site.content.aboutTitle}</p>
-            <h2>{site.content.aboutBody}</h2>
+            <div className="dashboard-panel-heading">
+              <div><p className="eyebrow">Analytics</p><h2>Performance over time</h2></div>
+              <span>Daily</span>
+            </div>
             <div className="dashboard-chart-grid">
               {chartTypes.map((chartType) => (
                 <article className={`dashboard-chart dashboard-chart-${chartType}`} key={chartType}>
@@ -256,19 +264,34 @@ function DashboardLayout({ site }: { site: GeneratedSite }) {
             </div>
           </div>
           <div className="dashboard-panel">
-            <p className="eyebrow">{site.content.offeringsTitle}</p>
+            <p className="eyebrow">Workspace</p>
+            <h2>{site.content.offeringsTitle}</h2>
             <OfferCards site={site} />
           </div>
         </section>
 
-        <section className="dashboard-list">
-          {firstSections.map((section) => (
-            <article key={section.id}>
-              <span>{section.label}</span>
-              <strong>{section.title}</strong>
-              <p>{section.body}</p>
-            </article>
-          ))}
+        <section className="dashboard-lower-grid">
+          <div className="dashboard-table">
+            <div className="dashboard-section-head"><strong>Top sections</strong><span>View all</span></div>
+            {firstSections.map((section, index) => (
+              <article key={section.id}>
+                <i>{index + 1}</i>
+                <strong>{section.title}</strong>
+                <p>{section.body}</p>
+                <b>{72 - index * 13}%</b>
+              </article>
+            ))}
+          </div>
+          <div className="dashboard-activity">
+            <div className="dashboard-section-head"><strong>Recent activity</strong><span>Today</span></div>
+            {firstSections.map((section, index) => (
+              <article key={section.id}>
+                <i>{section.label.slice(0, 1)}</i>
+                <div><strong>{section.label}</strong><p>{section.title}</p></div>
+                <span>{index + 2}m</span>
+              </article>
+            ))}
+          </div>
         </section>
 
         <DraftFooter site={site} />
