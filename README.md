@@ -4,8 +4,8 @@
 
 - Dashboard 시안은 `public/images/examples/dashboard-example.png`를 참고해 짙은 좌측 사이드바, 라임 포인트 컬러, KPI 카드, 분석 차트, Top sections 테이블, Recent activity 패널 중심으로 개선했습니다.
 - Dashboard의 선택형 차트 기능은 참고 이미지 기반 레이아웃 안에서도 그대로 반영되며 데스크톱, 태블릿, 모바일 화면에 맞춰 재배치됩니다.
-- 현재 생성 기능 준비 기간에는 메인, Templates, Product 페이지의 모든 시안 생성 CTA를 누르면 생성 화면으로 이동하지 않고 `준비 중입니다.` 안내창을 표시합니다.
-- Templates와 Product 등 일반 메뉴 이동은 기존과 동일하게 유지됩니다.
+- Navi의 `Start`와 일반 `시안 만들기` CTA는 기존처럼 생성 화면으로 이동합니다.
+- `/templates` 페이지의 네 번째 `Template` 카드에서 `시안 만들기`를 누른 경우에만 `준비 중입니다.` 안내창을 표시합니다.
 - 시안 생성 화면에서 `Dashboard` 템플릿을 선택하면 차트 유형 선택 메뉴가 표시됩니다.
 - `Line`, `Bar`, `Area`, `Donut` 차트를 하나 이상 복수 선택할 수 있습니다.
 - 선택한 차트 유형은 생성 요청과 `data/sites/{slug}.json`의 `input.chartTypes`에 저장됩니다.

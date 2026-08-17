@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 const productFlow = [
   {
     step: "01",
@@ -44,9 +46,10 @@ const productFlow = [
 ];
 
 export default function ProductPage() {
+  const router = useRouter();
+
   function startCreating(template = "saas") {
-    void template;
-    window.alert("준비 중입니다.");
+    router.push(`/create?industry=online-store&themeKey=soft&template=${template}`);
   }
 
   return (
