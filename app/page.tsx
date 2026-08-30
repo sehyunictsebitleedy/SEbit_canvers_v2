@@ -7,19 +7,22 @@ const templateCards = [
     type: "SaaS",
     title: "협업 도구 플랫폼",
     description: "랜딩, 가격표, 회원가입 흐름까지 한 번에 제안합니다.",
-    tone: "green"
+    tone: "green",
+    image: "/images/examples/saas-example.png"
   },
   {
     type: "Dashboard",
     title: "데이터 관리 대시보드",
     description: "지표, 카드, 테이블 구조를 목적에 맞게 구성합니다.",
-    tone: "blue"
+    tone: "blue",
+    image: "/images/examples/dashboard-example.png"
   },
   {
     type: "Editor",
     title: "콘텐츠 에디터 서비스",
     description: "문서 작성과 관리에 맞춘 화면 흐름을 설계합니다.",
-    tone: "cream"
+    tone: "cream",
+    image: "/images/examples/editor-example.png"
   }
 ];
 
@@ -276,11 +279,9 @@ export default function HomePage() {
           {templateCards.map((item) => (
             <article className={`cv2-case-card ${item.tone}`} key={item.type}>
               <span>{item.type}</span>
-              <div className="cv2-case-preview">
-                <i />
-                <i />
-                <i />
-              </div>
+              <figure className="cv2-case-preview">
+                <img src={item.image} alt={`${item.type} 시안 미리보기`} />
+              </figure>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
               <button type="button" onClick={() => startCreating(item.type.toLowerCase())}>→</button>
@@ -290,12 +291,7 @@ export default function HomePage() {
       </section>
 
       <section className="cv2-cta">
-        <div className="cv2-cta-bg" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div>
+        <div className="cv2-cta-copy">
           <span className="cv2-cta-kicker">Start from a template</span>
           <h2>
             지금 Canvers로
@@ -303,11 +299,23 @@ export default function HomePage() {
             첫 시안을 만들어보세요.
           </h2>
           <p>AI가 Nuxt 스타일 구조와 디자인을 제안하고, 팀이 함께 완성합니다.</p>
+          <div className="cv2-cta-action-row">
+            <a className="cv2-button cv2-button-large cv2-cta-primary" href="/create?industry=online-store&themeKey=soft&template=saas">
+              무료로 시작하기
+              <span aria-hidden="true">→</span>
+            </a>
+            <span className="cv2-cta-note">아이디어 입력부터 첫 화면까지 한 흐름으로</span>
+          </div>
         </div>
-        <a className="cv2-button cv2-button-dark cv2-button-large" href="/create?industry=online-store&themeKey=soft&template=saas">
-          무료로 시작하기
-          <span>→</span>
-        </a>
+        <figure className="cv2-cta-preview">
+          <div className="cv2-cta-preview-frame">
+            <img src="/images/examples/saas-example.png" alt="Canvers SaaS 시안 미리보기" />
+          </div>
+          <figcaption>
+            <span>Structure · Copy · Visual</span>
+            <strong>하나의 시안으로 정리됩니다.</strong>
+          </figcaption>
+        </figure>
       </section>
 
       <footer className="cv2-footer" id="about">
