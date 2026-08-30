@@ -10,7 +10,7 @@ const templates = [
     description:
       "문서 작성, 콘텐츠 관리, 블로그, 지식관리 서비스처럼 사용자가 글을 만들고 정리하는 서비스에 맞춘 시안입니다.",
     bestFor: ["문서 에디터", "블로그 CMS", "지식관리", "콘텐츠 협업"],
-    image: "/images/examples/editor-example.png",
+    image: "/images/examples/editor-example.png" as string | null,
     accent: "mint"
   },
   {
@@ -40,7 +40,7 @@ const templates = [
     description:
       "브랜드 소개, 포트폴리오, 마케팅 페이지처럼 다양한 목적에 맞춰 시작할 수 있는 범용 시안입니다.",
     bestFor: ["브랜드 소개", "포트폴리오", "마케팅 페이지", "이벤트 페이지"],
-    image: "/images/examples/saas-example.png",
+    image: null,
     accent: "cream"
   }
 ];
@@ -121,7 +121,22 @@ export default function TemplatesPage() {
               </button>
             </div>
             <figure className="template-detail-preview">
-              <img src={template.image} alt={`${template.title} 템플릿 시안 예시`} />
+              {template.image ? (
+                <img src={template.image} alt={`${template.title} 템플릿 시안 예시`} />
+              ) : (
+                <div className="template-kit-preview" role="img" aria-label="범용 템플릿 디자인 키트 예시">
+                  <div className="template-kit-swatches">
+                    <span className="template-kit-swatch a" />
+                    <span className="template-kit-swatch b" />
+                    <span className="template-kit-swatch c" />
+                  </div>
+                  <strong>Aa</strong>
+                  <div className="template-kit-buttons">
+                    <i />
+                    <i />
+                  </div>
+                </div>
+              )}
             </figure>
           </article>
         ))}

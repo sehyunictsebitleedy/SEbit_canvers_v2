@@ -59,11 +59,7 @@ export default function HomePage() {
       <section className="cv2-hero" id="top">
         <div className="cv2-hero-copy">
           <span className="cv2-pill">AI template builder</span>
-          <h1 className="h2_en">
-            Create your ideal
-            <br />
-            web service draft.
-          </h1>
+          <h1 className="h2_en">Create your ideal web service draft.</h1>
           <p>템플릿을 선택하면 AI가 Nuxt 스타일의 페이지 구조와 디자인을 먼저 제안합니다.</p>
           <div className="cv2-actions">
             <a className="cv2-button cv2-button-dark cv2-button-large" href="/create?industry=online-store&themeKey=soft&template=saas">
@@ -149,9 +145,10 @@ export default function HomePage() {
               <figure>
                 <img src="/images/examples/editor-example.png" alt="Editor 시안 썸네일" />
               </figure>
-              <figure className="dark">
-                <img src="/images/examples/saas-example.png" alt="Dark 템플릿 시안 썸네일" />
-              </figure>
+              <a className="cv2-template-grid-more" href="/templates" aria-label="템플릿 더 보기">
+                <span>+12</span>
+                <small>더보기</small>
+              </a>
             </div>
           </aside>
         </div>
@@ -167,7 +164,13 @@ export default function HomePage() {
         </div>
         <div className="cv2-value-list">
           <article>
-            <span className="cv2-glyph cv2-glyph-cubes" aria-hidden="true">IA</span>
+            <span className="cv2-glyph cv2-glyph-cubes" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3.5L20.5 8L12 12.5L3.5 8L12 3.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                <path d="M3.5 12L12 16.5L20.5 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M3.5 16L12 20.5L20.5 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
             <div>
               <h3>Clear structure</h3>
               <p>Nuxt 스타일의 페이지, 레이아웃, 섹션 구조를 기준으로 필요한 블록을 자동 구성합니다.</p>
@@ -175,7 +178,11 @@ export default function HomePage() {
             <b>›</b>
           </article>
           <article>
-            <span className="cv2-glyph cv2-glyph-bolt" aria-hidden="true">AI</span>
+            <span className="cv2-glyph cv2-glyph-bolt" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 2.5L4.5 14H11L10 21.5L19.5 9.5H13L13 2.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" fill="currentColor" fillOpacity="0.14" />
+              </svg>
+            </span>
             <div>
               <h3>Fast draft</h3>
               <p>아이디어를 입력하면 3분 내로 첫 초안을 생성합니다.</p>
