@@ -82,7 +82,7 @@ export default function TemplatesPage() {
         <nav aria-label="주요 메뉴">
           <a href="/templates">Templates</a>
           <a href="/product">Product</a>
-          <a href="/#about">About</a>
+          <a href="http://sebit.co.kr" target="_blank" rel="noopener noreferrer">SEbit About</a>
         </nav>
         <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating("saas")}>
           Start

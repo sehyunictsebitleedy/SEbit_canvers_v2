@@ -12,6 +12,7 @@ import type {
   StyleSpec
 } from "@/lib/canvers/types";
 import { updateGeneratedSite } from "@/lib/server/store";
+import { designSuggestionSchema } from "@/lib/server/ai";
 
 function stringValue(formData: FormData, key: string, fallback = "") {
   const value = formData.get(key);
@@ -132,6 +133,69 @@ export async function updateDesignGuide(slug: string, formData: FormData) {
       ctaLabel: stringValue(formData, "ctaLabel", site.content.ctaLabel),
       offeringsTitle: stringValue(formData, "offeringsTitle", site.content.offeringsTitle),
       sections: updateSections(site, formData)
+    }
+  }));
+
+  if (!updated) {
+    redirect("/create");
+  }
+
+  revalidatePath(`/${slug}`);
+  revalidatePath(`/${slug}/guide`);
+  revalidatePath(`/${slug}/cms`);
+  redirect(`/${slug}`);
+}
+
+export async function applyAiDesignSuggestion(slug: string, formData: FormData) {
+  const rawSuggestion = formData.get("suggestion");
+
+  if (typeof rawSuggestion !== "string") {
+    redirect(`/${slug}/guide`);
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(rawSuggestion);
+  } catch {
+    redirect(`/${slug}/guide`);
+  }
+
+  const result = designSuggestionSchema.safeParse(parsed);
+  if (!result.success) {
+    redirect(`/${slug}/guide`);
+  }
+
+  const suggestion = result.data;
+  const updated = await updateGeneratedSite(slug, (site) => ({
+    ...site,
+    designGuide: {
+      ...site.designGuide,
+      brandTone: suggestion.brandTone,
+      sectionDensity: suggestion.sectionDensity,
+      ctaStyle: suggestion.ctaStyle,
+      componentStyle: suggestion.componentStyle,
+      layoutRules: suggestion.layoutRules,
+      designNotes: suggestion.designNotes
+    },
+    input: {
+      ...site.input,
+      navLayout: suggestion.navLayout
+    },
+    style: {
+      ...site.style,
+      palette: {
+        bg: suggestion.background,
+        text: suggestion.background === "#000000" ? "#ffffff" : "#111111",
+        accent: suggestion.accent
+      },
+      fonts: {
+        ...site.style.fonts,
+        heading: suggestion.heading
+      },
+      visual: {
+        ...site.style.visual,
+        radius: suggestion.radius
+      }
     }
   }));
 

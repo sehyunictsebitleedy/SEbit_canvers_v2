@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getSiteBySlug } from "@/lib/server/store";
 import { updateDesignGuide } from "./actions";
+import { AiDesignAssistant } from "./ai-design-assistant";
 
 const toneGuides = [
   {
@@ -69,6 +70,8 @@ export default async function DesignGuidePage({ params }: { params: { slug: stri
             flow local to this project and stores the design rules in JSON.
           </p>
         </section>
+
+        <AiDesignAssistant slug={site.slug} businessName={site.input.businessName} />
 
         <section className="guide-layout">
           <aside className="guide-sidebar">

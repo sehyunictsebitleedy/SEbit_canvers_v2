@@ -1,5 +1,17 @@
 # SEbit Canvers v2
 
+## 최신 작업 내역 (2026-08-31)
+
+- 기본 한글 폰트를 네이버 `Nanum Gothic`으로 변경했습니다. `h1`은 Presentation, `h2`는 Paperozi ExtraBold를 사용합니다.
+- 한글 문장이 글자 중간에서 끊기지 않도록 단어 단위 줄바꿈과 제목·문단별 자연스러운 text wrapping 규칙을 추가했습니다.
+- Product Hero와 메인 Hero의 자간을 각각 `0.01em`, `-0.01em`으로 조정했습니다.
+- 메인, Product, Templates Navi의 `About` 메뉴를 `SEbit About`으로 변경하고 `http://sebit.co.kr`을 새 창으로 연결했습니다.
+- Dashboard 차트 선택 항목을 바, 원형, 도넛 3종으로 정리하고 기본 차트를 바와 원형으로 변경했습니다.
+- 생성 시안의 기본 배경은 흰색 또는 검은색만 사용하며 장식용 그라데이션을 제거했습니다. 차트 구분처럼 의미가 있는 데이터 색상은 유지합니다.
+- 디자인 가이드에 `AI Design Director`를 추가했습니다. 디자인 요구사항을 입력하면 Structured Outputs 기반의 디자인 토큰을 추천하고, 미리보기 후 사용자가 적용할 때만 JSON과 시안에 저장합니다.
+- AI 디자인 추천은 배경을 검은색 또는 흰색으로 제한하고 Brand tone, Density, CTA, Component, Accent, Font, Radius, Navigation과 디자인 메모를 구조화해 반환합니다.
+- `.env.example`에 `OPENAI_MODEL`, `OPENAI_DESIGN_MODEL` 설정 예시를 추가했습니다. `.env.local`은 Git에 포함되지 않습니다.
+
 ## 최신 작업 내역 (2026-08-17)
 
 - Dashboard 시안은 `public/images/examples/dashboard-example.png`를 참고해 짙은 좌측 사이드바, 라임 포인트 컬러, KPI 카드, 분석 차트, Top sections 테이블, Recent activity 패널 중심으로 개선했습니다.
@@ -7,10 +19,10 @@
 - Navi의 `Start`와 일반 `시안 만들기` CTA는 기존처럼 생성 화면으로 이동합니다.
 - `/templates` 페이지의 네 번째 `Template` 카드에서 `시안 만들기`를 누른 경우에만 `준비 중입니다.` 안내창을 표시합니다.
 - 시안 생성 화면에서 `Dashboard` 템플릿을 선택하면 차트 유형 선택 메뉴가 표시됩니다.
-- `Line`, `Bar`, `Area`, `Donut` 차트를 하나 이상 복수 선택할 수 있습니다.
+- `바`, `원형`, `도넛` 차트를 하나 이상 복수 선택할 수 있습니다.
 - 선택한 차트 유형은 생성 요청과 `data/sites/{slug}.json`의 `input.chartTypes`에 저장됩니다.
 - Dashboard 미리보기에는 선택한 차트만 카드 형태로 렌더링됩니다.
-- 기존에 생성된 Dashboard JSON에 `chartTypes`가 없으면 하위 호환을 위해 Line과 Bar 차트를 기본 표시합니다.
+- 기존에 생성된 Dashboard JSON에 `chartTypes`가 없으면 바와 원형 차트를 기본 표시합니다.
 - 모바일에서는 차트 선택 카드와 미리보기 차트가 화면 너비에 맞춰 2열 또는 1열로 재배치됩니다.
 
 ## 최신 작업 내역 (2026-08-10)
@@ -164,8 +176,14 @@ data/leads/{id}.json
 
 ```env
 OPENAI_API_KEY=your_api_key
+OPENAI_MODEL=gpt-4o-mini
+OPENAI_DESIGN_MODEL=gpt-4o-mini
 CANVERS_MOCK_MODE=false
 ```
+
+`OPENAI_API_KEY`는 OpenAI Platform의 API Keys 화면에서 발급한 프로젝트 키를 사용합니다. 모델 값은 계정에서 사용할 수 있는 모델 ID를 입력하며, 디자인 추천 전용 모델을 따로 지정하지 않으려면 `OPENAI_DESIGN_MODEL`을 `OPENAI_MODEL`과 동일하게 설정합니다.
+
+디자인 가이드의 `AI 디자인 추천`은 요구사항을 구조화된 디자인 토큰으로 변환해 먼저 미리보기를 보여주며, `추천 설정 적용`을 눌렀을 때만 JSON과 시안에 저장합니다. `CANVERS_MOCK_MODE=true`이거나 API 키가 없으면 외부 API를 호출하지 않고 로컬 추천값을 사용합니다.
 
 API 키가 없거나 할당량 문제가 있을 경우 mock mode로 실행할 수 있습니다.
 

@@ -3,10 +3,9 @@
 import { useState } from "react";
 
 const chartOptions = [
-  { value: "line", label: "Line", description: "Trends over time" },
-  { value: "bar", label: "Bar", description: "Category comparison" },
-  { value: "area", label: "Area", description: "Volume and growth" },
-  { value: "donut", label: "Donut", description: "Share and composition" }
+  { value: "bar", label: "바", description: "항목별 수치 비교" },
+  { value: "pie", label: "원형", description: "전체 구성 비율" },
+  { value: "donut", label: "도넛", description: "비중과 구성 비교" }
 ] as const;
 
 export function DashboardOptions({

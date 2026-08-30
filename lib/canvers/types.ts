@@ -4,7 +4,7 @@ export type TemplateKey = "saas" | "dashboard" | "editor" | "template";
 
 export type NavLayout = "top" | "side";
 
-export type DashboardChartType = "line" | "bar" | "area" | "donut";
+export type DashboardChartType = "bar" | "pie" | "donut";
 
 export type BrandTone = "trust-first" | "text-first" | "friendly-ai" | "technical";
 
