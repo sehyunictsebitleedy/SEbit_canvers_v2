@@ -55,12 +55,12 @@ export default function TemplatesPage() {
     }
 
     const themeByTemplate: Record<string, string> = {
-      editor: "editorial",
-      dashboard: "modern-business",
+      editor: "minimal",
+      dashboard: "minimal",
       saas: "soft"
     };
     const navByTemplate: Record<string, string> = {
-      editor: "side",
+      editor: "top",
       dashboard: "side",
       saas: "top"
     };

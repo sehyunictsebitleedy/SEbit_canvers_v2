@@ -1,30 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-const templateCards = [
-  {
-    type: "SaaS",
-    title: "협업 도구 플랫폼",
-    description: "랜딩, 가격표, 회원가입 흐름까지 한 번에 제안합니다.",
-    tone: "green",
-    image: "/images/examples/saas-example.png"
-  },
-  {
-    type: "Dashboard",
-    title: "데이터 관리 대시보드",
-    description: "지표, 카드, 테이블 구조를 목적에 맞게 구성합니다.",
-    tone: "blue",
-    image: "/images/examples/dashboard-example.png"
-  },
-  {
-    type: "Editor",
-    title: "콘텐츠 에디터 서비스",
-    description: "문서 작성과 관리에 맞춘 화면 흐름을 설계합니다.",
-    tone: "cream",
-    image: "/images/examples/editor-example.png"
-  }
-];
 
 const cases = [
   { name: "SaaS", copy: "서비스 소개와 전환 중심 페이지" },
@@ -34,6 +11,29 @@ const cases = [
 
 export default function HomePage() {
   const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const targets = document.querySelectorAll("[data-reveal]");
+    if (!targets.length || typeof IntersectionObserver === "undefined") {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -80px 0px" }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   function startCreating(template = "saas") {
     router.push(`/create?industry=online-store&themeKey=soft&template=${template}`);
@@ -51,10 +51,37 @@ export default function HomePage() {
           <a href="/product">Product</a>
           <a href="http://sebit.co.kr" target="_blank" rel="noopener noreferrer">SEbit About</a>
         </nav>
-        <a className="cv2-button cv2-button-dark" href="/create?industry=online-store&themeKey=soft&template=saas">
+        <a className="cv2-button cv2-button-dark cv2-nav-cta" href="/create?industry=online-store&themeKey=soft&template=saas">
           Start
         </a>
+        <button
+          type="button"
+          className={`cv2-nav-toggle ${menuOpen ? "open" : ""}`}
+          aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+          aria-expanded={menuOpen}
+          aria-controls="cv2-mobile-menu"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </header>
+
+      {menuOpen ? (
+        <nav id="cv2-mobile-menu" className="cv2-mobile-menu" aria-label="모바일 메뉴">
+          <a href="/templates" onClick={() => setMenuOpen(false)}>Templates</a>
+          <a href="/product" onClick={() => setMenuOpen(false)}>Product</a>
+          <a href="http://sebit.co.kr" target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)}>SEbit About</a>
+          <a
+            className="cv2-button cv2-button-dark cv2-button-large"
+            href="/create?industry=online-store&themeKey=soft&template=saas"
+            onClick={() => setMenuOpen(false)}
+          >
+            Start
+          </a>
+        </nav>
+      ) : null}
 
       <section className="cv2-hero" id="top">
         <div className="cv2-hero-copy">
@@ -154,7 +181,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="cv2-value" id="product">
+      <section className="cv2-value" id="product" data-reveal>
         <div>
           <h2>
             템플릿 선택이
@@ -192,7 +219,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="cv2-dark-band" id="templates">
+      <section className="cv2-dark-band" id="templates" data-reveal>
         <div className="cv2-dark-copy">
           <span>AI가</span>
           <h2>
@@ -253,7 +280,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="cv2-flow" id="flow">
+      <section className="cv2-flow" id="flow" data-reveal>
         <div>
           <h2 className="h2_en">Question?</h2>
           <p>간단한 질문에 답하면 AI가 최적의 시안을 만들어 드립니다.</p>
@@ -277,27 +304,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="cv2-cases" id="cases">
-        <div className="cv2-section-title">
-          <h2>Canvers로 만든 시안</h2>
-          <a href="/templates">모두 보기 →</a>
-        </div>
-        <div className="cv2-case-grid">
-          {templateCards.map((item) => (
-            <article className={`cv2-case-card ${item.tone}`} key={item.type}>
-              <span>{item.type}</span>
-              <figure className="cv2-case-preview">
-                <img src={item.image} alt={`${item.type} 시안 미리보기`} />
-              </figure>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              <button type="button" onClick={() => startCreating(item.type.toLowerCase())}>→</button>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="cv2-cta">
+      <section className="cv2-cta" data-reveal>
         <div className="cv2-cta-copy">
           <span className="cv2-cta-kicker">Start from a template</span>
           <h2>

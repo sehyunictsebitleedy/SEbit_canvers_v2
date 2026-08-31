@@ -11,10 +11,7 @@ const templateLabels: Record<string, string> = {
 const themeLabels: Record<string, string> = {
   soft: "Soft",
   minimal: "Minimal",
-  bold: "Bold",
-  editorial: "Editorial",
-  "modern-business": "Modern Business",
-  "minimal-service": "Minimal Service"
+  bold: "Bold"
 };
 
 const navLayouts = [

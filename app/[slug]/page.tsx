@@ -33,6 +33,24 @@ const templateMeta: Record<
   }
 };
 
+function buildCalendarInfo() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const firstWeekday = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const cells: (number | null)[] = Array(firstWeekday).fill(null);
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    cells.push(day);
+  }
+
+  return {
+    cells,
+    today: now.getDate(),
+    monthLabel: now.toLocaleDateString("en-US", { month: "long", year: "numeric" })
+  };
+}
+
 function radiusValue(radius: "none" | "small" | "large") {
   if (radius === "large") {
     return "28px";
@@ -87,7 +105,7 @@ function DraftHeader({ site }: { site: GeneratedSite }) {
       <strong>{site.input.businessName}</strong>
       <nav>
         <a href="/">Canvers</a>
-        <a href="#sections">{meta.primary}</a>
+        <a className="active" href="#sections">{meta.primary}</a>
         <a href={`/${site.slug}/guide`}>Design Guide</a>
         <a href={`/${site.slug}/cms`}>JSON</a>
       </nav>
@@ -179,10 +197,20 @@ function SaasLayout({ site }: { site: GeneratedSite }) {
           <aside className="saas-product-card">
             <span>Nuxt-style launch page</span>
             <strong>Product story, pricing, and signup flow.</strong>
+            <div className="saas-product-stats">
+              <div>
+                <small>MRR</small>
+                <b>+18%</b>
+              </div>
+              <div>
+                <small>Active users</small>
+                <b>2,481</b>
+              </div>
+            </div>
             <div className="saas-chart">
-              <i />
-              <i />
-              <i />
+              <div><b>72%</b><i /></div>
+              <div><b>54%</b><i /></div>
+              <div><b>38%</b><i /></div>
             </div>
           </aside>
         </section>
@@ -213,34 +241,38 @@ function SaasLayout({ site }: { site: GeneratedSite }) {
 function DashboardLayout({ site }: { site: GeneratedSite }) {
   const firstSections = site.content.sections.slice(0, 3);
   const chartTypes = site.input.chartTypes?.length ? site.input.chartTypes : ["bar", "pie"];
+  const calendar = buildCalendarInfo();
 
   return (
     <PreviewShell site={{ ...site, input: { ...site.input, navLayout: site.input.navLayout || "side" } }}>
       <DraftHeader site={site} />
       <div className="generated-page-body dashboard-layout">
-        <section className="dashboard-topline">
-          <div>
-            <p className="eyebrow">Dashboard draft</p>
-            <h1>Overview</h1>
-            <p>{site.input.businessName} performance at a glance</p>
-          </div>
-          <div className="dashboard-toolbar">
-            <span>Last 30 days</span>
-            <a href="#sections">Filter</a>
-          </div>
-        </section>
+        <p className="dashboard-greeting">안녕하세요, {site.input.businessName}님!</p>
 
-        <section className="dashboard-metrics" id="sections">
-          {["Total revenue", "New customers", "Orders", "Conversion rate"].map((label, index) => (
-            <article key={label}>
-              <span>{label}</span>
-              <strong>{index === 0 ? "$24.5K" : index === 1 ? "1,284" : index === 2 ? "8,427" : "67%"}</strong>
-              <div className="dashboard-metric-trend">
-                <b>↑ {index === 1 ? "8.2%" : index === 3 ? "6.1%" : "12.5%"}</b>
-                <i />
-              </div>
-            </article>
-          ))}
+        <section className="dashboard-summary" id="sections">
+          <div className="dashboard-summary-head">
+            <span className="dashboard-summary-icon" aria-hidden="true" />
+            <div>
+              <h1>이번 달 현황</h1>
+              <p>{site.input.businessName} performance at a glance</p>
+            </div>
+            <div className="dashboard-toolbar">
+              <span>Last 30 days</span>
+              <a href="#sections">Filter</a>
+            </div>
+          </div>
+          <div className="dashboard-metrics">
+            {["Total revenue", "New customers", "Orders", "Conversion rate"].map((label, index) => (
+              <article key={label}>
+                <span>{label}</span>
+                <strong>{index === 0 ? "$24.5K" : index === 1 ? "1,284" : index === 2 ? "8,427" : "67%"}</strong>
+                <div className="dashboard-metric-trend">
+                  <b>↑ {index === 1 ? "8.2%" : index === 3 ? "6.1%" : "12.5%"}</b>
+                  <i />
+                </div>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section className="dashboard-workspace">
@@ -256,9 +288,25 @@ function DashboardLayout({ site }: { site: GeneratedSite }) {
                     <span>{chartType === "donut" ? "Distribution" : chartType === "pie" ? "Composition" : "Performance"}</span>
                     <strong>{chartType === "bar" ? "바" : chartType === "pie" ? "원형" : "도넛"}</strong>
                   </div>
-                  <div className="dashboard-chart-visual" aria-label={`${chartType} chart preview`} role="img">
-                    <i /><i /><i /><i /><i /><i />
-                  </div>
+                  {chartType === "bar" ? (
+                    <>
+                      <div className="dashboard-chart-visual" aria-label="bar chart preview" role="img">
+                        <i /><i /><i /><i /><i /><i />
+                        <em /><em /><em /><em /><em /><em />
+                      </div>
+                      <div className="dashboard-chart-legend">
+                        <span><i /> This period</span>
+                        <span><em /> Last period</span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="dashboard-chart-visual" aria-label={`${chartType} chart preview`} role="img">
+                      <i /><i /><i /><i /><i /><i />
+                      <b className="dashboard-chart-label a">38%</b>
+                      <b className="dashboard-chart-label b">30%</b>
+                      <b className="dashboard-chart-label c">32%</b>
+                    </div>
+                  )}
                 </article>
               ))}
             </div>
@@ -294,6 +342,39 @@ function DashboardLayout({ site }: { site: GeneratedSite }) {
           </div>
         </section>
 
+        <section className="dashboard-widgets-row">
+          <div className="dashboard-panel dashboard-team">
+            <div className="dashboard-section-head"><strong>Team</strong><span>{firstSections.length} members</span></div>
+            <div className="dashboard-team-list">
+              {firstSections.map((section, index) => (
+                <div className="dashboard-team-member" key={section.id}>
+                  <i className={`dashboard-avatar tone-${index % 3}`} aria-hidden="true" />
+                  <div>
+                    <strong>{section.label}</strong>
+                    <span>{section.title}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="dashboard-panel dashboard-calendar">
+            <div className="dashboard-section-head"><strong>Calendar</strong><span>{calendar.monthLabel}</span></div>
+            <div className="dashboard-calendar-grid">
+              {["S", "M", "T", "W", "T", "F", "S"].map((label, index) => (
+                <span className="dashboard-calendar-weekday" key={`${label}-${index}`}>{label}</span>
+              ))}
+              {calendar.cells.map((day, index) => (
+                <span
+                  key={index}
+                  className={day === calendar.today ? "is-today" : ""}
+                >
+                  {day || ""}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <DraftFooter site={site} />
       </div>
     </PreviewShell>
@@ -301,40 +382,100 @@ function DashboardLayout({ site }: { site: GeneratedSite }) {
 }
 
 function EditorLayout({ site }: { site: GeneratedSite }) {
+  const posts = [
+    ...site.content.offerings.map((item, index) => ({
+      id: `offer-${index}`,
+      title: item.title,
+      body: item.description,
+      label: site.content.offeringsTitle
+    })),
+    ...site.content.sections.map((section) => ({
+      id: section.id,
+      title: section.title,
+      body: section.body,
+      label: section.label
+    }))
+  ];
+  const featured = posts[0];
+  const featuredSide = posts.slice(1, 4);
+  const latest = posts.slice(0, 4);
+  const popular = posts.slice(0, 5);
+
   return (
-    <PreviewShell site={{ ...site, input: { ...site.input, navLayout: site.input.navLayout || "side" } }}>
+    <PreviewShell site={{ ...site, input: { ...site.input, navLayout: "top" } }}>
       <DraftHeader site={site} />
-      <div className="generated-page-body editor-layout">
-        <section className="editor-shell">
-          <aside className="editor-doc-list">
-            <span>Workspace</span>
-            {[site.content.aboutTitle, site.content.offeringsTitle, ...site.content.sections.map((item) => item.label)].slice(0, 5).map((item) => (
-              <b key={item}>{item}</b>
+      <div className="generated-page-body editor-layout editor-blog-layout">
+        <section className="editor-blog-hero">
+          <div>
+            <p className="eyebrow">Editor draft</p>
+            <h1>{site.input.businessName}에 오신 것을 환영합니다</h1>
+            <p className="lead">{site.content.heroSubhead}</p>
+            <HeroActions site={site} />
+          </div>
+          <div className="editor-blog-hero-art" aria-hidden="true">
+            <i /><i /><i />
+          </div>
+        </section>
+
+        <section className="editor-blog-featured" id="sections">
+          <div className="editor-section-head">
+            <h2>Featured</h2>
+          </div>
+          <div className="editor-feature-grid">
+            <article className="editor-feature-card">
+              <div className="editor-feature-thumb" aria-hidden="true" />
+              <div>
+                <h3>{featured.title}</h3>
+                <p>{featured.body}</p>
+                <span className="editor-post-meta">{site.input.businessName} · {featured.label}</span>
+              </div>
+            </article>
+            <div className="editor-feature-list">
+              {featuredSide.map((post) => (
+                <article key={post.id}>
+                  <div className="editor-feature-thumb small" aria-hidden="true" />
+                  <div>
+                    <h4>{post.title}</h4>
+                    <span className="editor-post-meta">{post.label}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="editor-blog-columns">
+          <div className="editor-blog-main">
+            <div className="editor-section-head">
+              <h2>Latest Posts</h2>
+            </div>
+            <div className="editor-post-grid">
+              {latest.map((post) => (
+                <article className="editor-post-card" key={post.id}>
+                  <div className="editor-feature-thumb" aria-hidden="true" />
+                  <h3>{post.title}</h3>
+                  <p>{post.body}</p>
+                  <span className="editor-post-meta">{site.input.businessName} · {post.label}</span>
+                </article>
+              ))}
+            </div>
+          </div>
+          <aside className="editor-popular">
+            <div className="editor-section-head">
+              <h2>Popular Posts</h2>
+            </div>
+            {popular.map((post, index) => (
+              <article className="editor-popular-item" key={post.id}>
+                <i>{String(index + 1).padStart(2, "0")}</i>
+                <div>
+                  <strong>{post.title}</strong>
+                  <span>{post.label}</span>
+                </div>
+              </article>
             ))}
           </aside>
-          <article className="editor-document">
-            <p className="eyebrow">Editor draft</p>
-            <h1>{site.input.businessName}</h1>
-            <p className="lead">{site.content.heroSubhead}</p>
-            <div className="editor-toolbar">
-              <span>Text</span>
-              <span>Blocks</span>
-              <span>Publish</span>
-            </div>
-            <section>
-              <h2>{site.content.aboutTitle}</h2>
-              <p>{site.content.aboutBody}</p>
-              <SystemSummary site={site} />
-            </section>
-            {site.content.sections.map((section) => (
-              <section key={section.id}>
-                <h2>{section.title}</h2>
-                <p>{section.body}</p>
-              </section>
-            ))}
-            <HeroActions site={site} />
-          </article>
         </section>
+
         <DraftFooter site={site} />
       </div>
     </PreviewShell>

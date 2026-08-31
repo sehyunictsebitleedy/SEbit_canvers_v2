@@ -47,9 +47,11 @@ function mockDesignSuggestion(input: GenerateSiteInput): DesignSuggestion {
     radius: dashboardLike ? "small" : "large",
     navLayout: dashboardLike ? "side" : "top",
     layoutRules: dashboardLike
-      ? "Use a compact information hierarchy with persistent navigation and clear data groups."
+      ? "Use a conventional admin dashboard grid: a persistent side nav, one unified summary card with a few key metrics, then structured list and chart panels grouped in a clear two-column layout."
       : "Use a clear hero, concise content sections, and one focused conversion path.",
-    designNotes: "Use a solid black or white base, one accent color, and no decorative gradients."
+    designNotes: dashboardLike
+      ? "Favor a plain, conventional business-tool layout over trend-heavy styling: light panels, small neutral icon badges, and one accent color used sparingly for emphasis, not decoration."
+      : "Use a solid black or white base, one accent color, and no decorative gradients."
   };
 }
 
@@ -68,7 +70,7 @@ export async function generateDesignSuggestion(
   const response = await openai.responses.create({
     model: process.env.OPENAI_DESIGN_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini",
     instructions:
-      "You are Canvers design director. Recommend usable website design tokens. The background must be pure black or pure white. Use one accessible accent color and never recommend gradients. Keep layoutRules and designNotes concise.",
+      "You are Canvers design director. Recommend usable website design tokens. The background must be pure black or pure white. Use one accessible accent color and never recommend gradients. Favor conventional, structured layouts over trend-heavy styling: clear grids, plain cards, small neutral icon badges, and restrained use of the accent color for emphasis rather than decoration. For the dashboard template specifically, recommend a standard admin-console layout — persistent side navigation, one unified summary card with key metrics, and structured list/chart panels in a two-column grid — rather than bold marketing-style visuals. Keep layoutRules and designNotes concise.",
     input: JSON.stringify({ request, project: input, currentStyle }),
     text: {
       format: {
