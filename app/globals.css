@@ -4103,8 +4103,7 @@ img {
   justify-content: center;
 }
 
-.cv2-dark-copy span,
-.cv2-status {
+.cv2-dark-copy span {
   display: inline-flex;
   width: max-content;
   margin-bottom: 18px;
@@ -4122,13 +4121,6 @@ img {
 .cv2-dark-preview {
   position: relative;
   min-height: 360px;
-}
-
-.cv2-status {
-  position: absolute;
-  top: 0;
-  left: 22px;
-  z-index: 2;
 }
 
 .cv2-generated-card {

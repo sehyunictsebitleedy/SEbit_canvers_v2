@@ -234,7 +234,6 @@ export default function HomePage() {
           </p>
         </div>
         <div className="cv2-dark-preview">
-          <span className="cv2-status">생성된 시안</span>
           <div className="cv2-generated-card">
             <div className="cv2-generated-copy">
               <small>SaaS Template</small>
