@@ -23,7 +23,7 @@ export default async function CmsPage({ params }: { params: { slug: string } }) 
           <div className="split-head">
             <h1 className="display-title">JSON draft data.</h1>
             <p className="section-note">
-              v1에서는 DB 없이 생성 결과를 JSON 파일로 저장합니다. 이후 편집 UI와 배포 기능을 붙일 수 있습니다.
+              생성 결과는 Supabase에 JSON으로 저장됩니다. 이후 편집 UI와 배포 기능을 붙일 수 있습니다.
             </p>
           </div>
 

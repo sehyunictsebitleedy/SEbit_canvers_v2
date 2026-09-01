@@ -1,35 +1,45 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { getSupabaseServerClient } from "@/lib/server/supabase";
 import type { GeneratedSite } from "@/lib/canvers/types";
 
-const memorySites = new Map<string, GeneratedSite>();
-const sitesDir = path.join(process.cwd(), "data", "sites");
-
-function sitePath(slug: string) {
-  return path.join(sitesDir, `${slug}.json`);
-}
-
-async function ensureSitesDir() {
-  await fs.mkdir(sitesDir, { recursive: true });
-}
-
 export async function isSlugTaken(slug: string) {
-  if (memorySites.has(slug)) {
-    return true;
+  const supabase = getSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("sites")
+    .select("id")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`슬러그 확인 중 오류가 발생했습니다: ${error.message}`);
   }
 
-  try {
-    await fs.access(sitePath(slug));
-    return true;
-  } catch {
-    return false;
-  }
+  return Boolean(data);
 }
 
 export async function saveGeneratedSite(site: GeneratedSite) {
-  await ensureSitesDir();
-  memorySites.set(site.slug, site);
-  await fs.writeFile(sitePath(site.slug), JSON.stringify(site, null, 2), "utf8");
+  const supabase = getSupabaseServerClient();
+  const { error } = await supabase.from("sites").upsert(
+    {
+      id: site.id,
+      slug: site.slug,
+      business_name: site.input.businessName,
+      industry: site.input.industry,
+      one_liner: site.input.oneLiner,
+      style_json: site.style,
+      content_json: site.content,
+      site_json: site,
+      contact: site.input.contact ?? null,
+      address: site.input.address ?? null,
+      business_hours: site.input.businessHours ?? null,
+      updated_at: new Date().toISOString()
+    },
+    { onConflict: "slug" }
+  );
+
+  if (error) {
+    throw new Error(`시안 저장 중 오류가 발생했습니다: ${error.message}`);
+  }
+
   return site;
 }
 
@@ -46,19 +56,18 @@ export async function updateGeneratedSite(slug: string, updater: (site: Generate
 }
 
 export async function getSiteBySlug(slug: string) {
-  const memorySite = memorySites.get(slug);
-  if (memorySite) {
-    return memorySite;
+  const supabase = getSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("sites")
+    .select("site_json")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`시안을 불러오는 중 오류가 발생했습니다: ${error.message}`);
   }
 
-  try {
-    const raw = await fs.readFile(sitePath(slug), "utf8");
-    const site = JSON.parse(raw) as GeneratedSite;
-    memorySites.set(slug, site);
-    return site;
-  } catch {
-    return null;
-  }
+  return (data?.site_json as GeneratedSite | undefined) ?? null;
 }
 
 export async function saveLead(input: {
@@ -67,15 +76,28 @@ export async function saveLead(input: {
   contact: string;
   message?: string;
 }) {
-  const leadsDir = path.join(process.cwd(), "data", "leads");
-  await fs.mkdir(leadsDir, { recursive: true });
-
+  const supabase = getSupabaseServerClient();
   const lead = {
     id: crypto.randomUUID(),
-    ...input,
-    createdAt: new Date().toISOString()
+    site_id: input.siteId,
+    name: input.name,
+    contact: input.contact,
+    message: input.message ?? null,
+    created_at: new Date().toISOString()
   };
 
-  await fs.writeFile(path.join(leadsDir, `${lead.id}.json`), JSON.stringify(lead, null, 2), "utf8");
-  return lead;
+  const { error } = await supabase.from("leads").insert(lead);
+
+  if (error) {
+    throw new Error(`문의 저장 중 오류가 발생했습니다: ${error.message}`);
+  }
+
+  return {
+    id: lead.id,
+    siteId: input.siteId,
+    name: input.name,
+    contact: input.contact,
+    message: input.message,
+    createdAt: lead.created_at
+  };
 }
