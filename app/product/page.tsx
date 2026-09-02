@@ -48,8 +48,8 @@ const productFlow = [
 export default function ProductPage() {
   const router = useRouter();
 
-  function startCreating(template = "saas") {
-    router.push(`/create?industry=online-store&themeKey=soft&template=${template}`);
+  function startCreating() {
+    router.push("/create?themeKey=modern-business");
   }
 
   return (

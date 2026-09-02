@@ -1,40 +1,29 @@
 import { generateSiteAction } from "./actions";
-import { DashboardOptions } from "./dashboard-options";
-
-const templateLabels: Record<string, string> = {
-  saas: "SaaS",
-  dashboard: "Dashboard",
-  editor: "Editor",
-  template: "Template"
-};
+import { StructureOptions } from "./structure-options";
 
 const themeLabels: Record<string, string> = {
   soft: "Soft",
   minimal: "Minimal",
-  bold: "Bold"
+  bold: "Bold",
+  "modern-business": "Modern Business"
 };
 
-const navLayouts = [
-  {
-    value: "top",
-    title: "Top navigation",
-    description: "Landing page, brand site, SaaS intro page에 잘 맞는 상단 메뉴형입니다."
-  },
-  {
-    value: "side",
-    title: "Left side navigation",
-    description: "Dashboard, editor, tool형 서비스처럼 앱 느낌을 줄 때 좋습니다."
-  }
+const footerFields = [
+  { name: "companyName", label: "상호명", placeholder: "(주) 세빛", required: true },
+  { name: "owner", label: "대표자", placeholder: "홍길동" },
+  { name: "address", label: "주소", placeholder: "서울시 ..." },
+  { name: "phone", label: "전화번호", placeholder: "02-000-0000" },
+  { name: "email", label: "이메일", placeholder: "hello@example.com" },
+  { name: "businessNumber", label: "사업자등록번호", placeholder: "000-00-00000" },
+  { name: "hours", label: "영업시간", placeholder: "평일 09:00 - 18:00" }
 ];
 
 export default function CreatePage({
   searchParams
 }: {
-  searchParams: { template?: string; themeKey?: string; navLayout?: string };
+  searchParams: { themeKey?: string };
 }) {
-  const template = templateLabels[searchParams.template || ""] ? searchParams.template! : "saas";
-  const themeKey = themeLabels[searchParams.themeKey || ""] ? searchParams.themeKey! : "soft";
-  const navLayout = searchParams.navLayout === "side" ? "side" : "top";
+  const themeKey = themeLabels[searchParams.themeKey || ""] ? searchParams.themeKey! : "modern-business";
 
   return (
     <div className="create-page">
@@ -43,108 +32,89 @@ export default function CreatePage({
           <strong>Canvers.</strong>
           <span>Create</span>
         </a>
-        <a className="button button-ghost button-small" href="/templates">
-          Templates
-        </a>
       </header>
 
       <main className="section">
         <div className="section-inner">
-          <p className="eyebrow">AI draft setup</p>
+          <p className="eyebrow">대시보드형 홈페이지 시안</p>
           <div className="split-head">
             <h1 className="display-title">
-              Tell us the idea.
+              구조만 정하면
               <br />
-              Canvers drafts it.
+              시안이 만들어집니다.
             </h1>
             <p className="section-note">
-              DB 없이 JSON 파일로 저장되는 v1 생성 흐름입니다. OpenAI 키가 없거나 quota 문제가 있으면 mock draft로 동작합니다.
+              메인 비주얼, 게시판, 위젯, 메뉴, 푸터 정보를 선택하면 대시보드 스타일의 홈페이지 골격을 생성합니다.
+              세부 내용은 생성 후 편집합니다.
             </p>
           </div>
 
           <form className="form-surface" action={generateSiteAction}>
-            <input type="hidden" name="track" value="theme" />
-            <input type="hidden" name="industry" value="online-store" />
+            <section className="wizard-step">
+              <div className="wizard-step-head">
+                <span>00</span>
+                <div>
+                  <h2>기본 정보</h2>
+                  <p>프로젝트 이름과 시안 주소, 디자인 스타일을 정합니다.</p>
+                </div>
+              </div>
 
-            <DashboardOptions
-              template={template}
-              themeKey={themeKey}
-              templateLabels={templateLabels}
-              themeLabels={themeLabels}
-            />
+              <div className="form-grid">
+                <div className="field">
+                  <label htmlFor="businessName">프로젝트 이름</label>
+                  <input id="businessName" name="businessName" defaultValue="세빛 대시보드" required />
+                </div>
+                <div className="field">
+                  <label htmlFor="slug">시안 주소</label>
+                  <input id="slug" name="slug" defaultValue="sebit-dashboard" placeholder="sebit-dashboard" />
+                </div>
+              </div>
 
-            <div className="field">
-              <label>Navigation layout</label>
-              <div className="nav-layout-options">
-                {navLayouts.map((item) => (
-                  <label className="nav-layout-card" key={item.value}>
-                    <input name="navLayout" type="radio" value={item.value} defaultChecked={navLayout === item.value} />
-                    <span>{item.title}</span>
-                    <small>{item.description}</small>
-                  </label>
+              <div className="form-grid">
+                <div className="field">
+                  <label htmlFor="oneLiner">한 줄 소개 (선택)</label>
+                  <input id="oneLiner" name="oneLiner" placeholder="고객 현황과 공지를 한 곳에서 관리합니다" />
+                </div>
+                <div className="field">
+                  <label htmlFor="themeKey">디자인 스타일</label>
+                  <select id="themeKey" name="themeKey" defaultValue={themeKey}>
+                    {Object.entries(themeLabels).map(([value, label]) => (
+                      <option value={value} key={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <StructureOptions />
+
+            <section className="wizard-step">
+              <div className="wizard-step-head">
+                <span>05</span>
+                <div>
+                  <h2>푸터 정보</h2>
+                  <p>페이지 하단에 표시할 사업자 정보를 입력합니다.</p>
+                </div>
+              </div>
+              <div className="form-grid">
+                {footerFields.map((fieldItem) => (
+                  <div className="field" key={fieldItem.name}>
+                    <label htmlFor={`footer-${fieldItem.name}`}>{fieldItem.label}</label>
+                    <input
+                      id={`footer-${fieldItem.name}`}
+                      name={`footer-${fieldItem.name}`}
+                      placeholder={fieldItem.placeholder}
+                      required={fieldItem.required}
+                    />
+                  </div>
                 ))}
               </div>
-            </div>
-
-            <div className="form-grid">
-              <div className="field">
-                <label htmlFor="businessName">Project name</label>
-                <input id="businessName" name="businessName" defaultValue="Flowly" required />
-              </div>
-              <div className="field">
-                <label htmlFor="slug">Draft URL</label>
-                <input id="slug" name="slug" defaultValue="flowly-draft" placeholder="flowly-draft" />
-              </div>
-            </div>
-
-            <div className="field">
-              <label htmlFor="oneLiner">One-line idea</label>
-              <input
-                id="oneLiner"
-                name="oneLiner"
-                defaultValue="업무를 연결하고 성장을 빠르게 만드는 웹서비스"
-                required
-              />
-            </div>
-
-            <div className="form-grid">
-              <div className="field">
-                <label htmlFor="targetAudience">Target user</label>
-                <input id="targetAudience" name="targetAudience" defaultValue="초기 스타트업 팀" />
-              </div>
-              <div className="field">
-                <label htmlFor="visualTone">Visual tone</label>
-                <input id="visualTone" name="visualTone" defaultValue="신뢰감 있는, 밝은, 컴팩트한" />
-              </div>
-            </div>
-
-            <div className="field">
-              <label htmlFor="keyFeatures">Key features</label>
-              <textarea
-                id="keyFeatures"
-                name="keyFeatures"
-                defaultValue={"프로젝트 관리\n팀 활동 확인\n대시보드 리포트"}
-              />
-            </div>
-
-            <div className="field">
-              <label htmlFor="offerings">Sections to highlight</label>
-              <textarea
-                id="offerings"
-                name="offerings"
-                defaultValue={
-                  "AI 구조 생성 - 필요한 섹션을 먼저 제안\n카피 초안 - 제목과 버튼 문구를 생성\n반응형 미리보기 - 화면 흐름 확인"
-                }
-              />
-            </div>
-
-            <div className="field">
-              <label htmlFor="contact">Contact CTA</label>
-              <input id="contact" name="contact" defaultValue="hello@canvers.local" />
-            </div>
+            </section>
 
             <button className="primary-button" type="submit">
-              AI 시안 생성하기 →
+              시안 생성하기 →
             </button>
           </form>
         </div>

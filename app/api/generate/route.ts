@@ -3,15 +3,29 @@ import { z } from "zod";
 import { generateSite } from "@/lib/server/generate-site";
 import type { GenerateSiteInput } from "@/lib/canvers/types";
 
-const offeringSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().optional()
+const boardSchema = z.object({
+  name: z.string().min(1),
+  type: z.enum(["notice", "gallery", "faq", "inquiry", "general"])
+});
+
+const menuSchema = z.object({
+  label: z.string().min(1),
+  href: z.string().min(1)
+});
+
+const footerSchema = z.object({
+  companyName: z.string().default(""),
+  owner: z.string().optional(),
+  address: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
+  businessNumber: z.string().optional(),
+  hours: z.string().optional()
 });
 
 const generateSchema = z.object({
   track: z.literal("theme").default("theme"),
-  template: z.enum(["saas", "dashboard", "editor", "template"]).default("saas"),
-  chartTypes: z.array(z.enum(["bar", "pie", "donut"])).max(3).optional(),
+  navLayout: z.enum(["top", "side"]).default("side"),
   themeKey: z.enum(["minimal", "editorial", "bold", "soft", "modern-business", "warm-food", "minimal-service"]).default("soft"),
   businessName: z.string().min(1),
   slug: z.string().optional(),
@@ -25,13 +39,14 @@ const generateSchema = z.object({
     "professional-service",
     "product-workshop",
     "other"
-  ]).default("online-store"),
-  oneLiner: z.string().min(1),
-  targetAudience: z.string().optional(),
-  keyFeatures: z.array(z.string()).default([]),
-  visualTone: z.string().optional(),
-  offerings: z.array(offeringSchema).default([]),
-  contact: z.string().optional()
+  ]).default("other"),
+  oneLiner: z.string().optional(),
+  useMainVisual: z.boolean().default(true),
+  boards: z.array(boardSchema).max(6).default([]),
+  chartTypes: z.array(z.enum(["bar", "pie", "donut"])).max(3).default([]),
+  showCalendar: z.boolean().default(false),
+  menus: z.array(menuSchema).default([]),
+  footer: footerSchema.default({ companyName: "" })
 });
 
 export async function POST(request: Request) {

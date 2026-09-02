@@ -3,16 +3,21 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type {
+  BoardConfig,
+  BoardType,
   BrandTone,
   ComponentStyle,
   CtaStyle,
+  FooterInfo,
   GeneratedSite,
-  NavLayout,
   SectionDensity,
   StyleSpec
 } from "@/lib/canvers/types";
+import { buildMenus } from "@/lib/canvers/menus";
 import { updateGeneratedSite } from "@/lib/server/store";
 import { designSuggestionSchema } from "@/lib/server/ai";
+
+const BOARD_TYPES: BoardType[] = ["notice", "gallery", "faq", "inquiry", "general"];
 
 function stringValue(formData: FormData, key: string, fallback = "") {
   const value = formData.get(key);
@@ -24,15 +29,11 @@ function selectRadius(value: string): StyleSpec["visual"]["radius"] {
     return value;
   }
 
-  return "large";
+  return "small";
 }
 
 function selectHeading(value: string): StyleSpec["fonts"]["heading"] {
   return value === "serif" ? "serif" : "sans-serif";
-}
-
-function selectNavLayout(value: string): NavLayout {
-  return value === "side" ? "side" : "top";
 }
 
 function selectBrandTone(value: string): BrandTone {
@@ -40,7 +41,7 @@ function selectBrandTone(value: string): BrandTone {
     return value;
   }
 
-  return "friendly-ai";
+  return "technical";
 }
 
 function selectSectionDensity(value: string): SectionDensity {
@@ -48,7 +49,7 @@ function selectSectionDensity(value: string): SectionDensity {
     return value;
   }
 
-  return "balanced";
+  return "compact";
 }
 
 function selectCtaStyle(value: string): CtaStyle {
@@ -67,74 +68,88 @@ function selectComponentStyle(value: string): ComponentStyle {
   return "cards";
 }
 
-function parseBullets(value: string) {
-  return value
-    .split(/\n|,/)
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .slice(0, 5);
-}
-
-function updateSections(site: GeneratedSite, formData: FormData) {
-  return site.content.sections.map((section) => {
-    const title = stringValue(formData, `section-${section.id}-title`, section.title);
-    const body = stringValue(formData, `section-${section.id}-body`, section.body);
-    const bulletsText = stringValue(formData, `section-${section.id}-bullets`, section.bullets?.join("\n") || "");
-
-    return {
-      ...section,
-      title,
-      body,
-      bullets: parseBullets(bulletsText)
-    };
+function updateBoards(site: GeneratedSite, formData: FormData): BoardConfig[] {
+  return (site.input.boards || []).map((board, index) => {
+    const name = stringValue(formData, `board-${index}-name`, board.name);
+    const rawType = stringValue(formData, `board-${index}-type`, board.type);
+    const type = BOARD_TYPES.includes(rawType as BoardType) ? (rawType as BoardType) : board.type;
+    return { name, type };
   });
 }
 
+function updateFooter(site: GeneratedSite, formData: FormData): FooterInfo {
+  const current = site.input.footer || { companyName: "" };
+  return {
+    companyName: stringValue(formData, "footer-companyName", current.companyName),
+    owner: stringValue(formData, "footer-owner", current.owner || "") || undefined,
+    address: stringValue(formData, "footer-address", current.address || "") || undefined,
+    phone: stringValue(formData, "footer-phone", current.phone || "") || undefined,
+    email: stringValue(formData, "footer-email", current.email || "") || undefined,
+    businessNumber: stringValue(formData, "footer-businessNumber", current.businessNumber || "") || undefined,
+    hours: stringValue(formData, "footer-hours", current.hours || "") || undefined
+  };
+}
+
 export async function updateDesignGuide(slug: string, formData: FormData) {
-  const updated = await updateGeneratedSite(slug, (site) => ({
-    ...site,
-    designGuide: {
-      brandTone: selectBrandTone(stringValue(formData, "brandTone", site.designGuide?.brandTone || "friendly-ai")),
-      layoutRules: stringValue(
-        formData,
-        "layoutRules",
-        site.designGuide?.layoutRules || "Use a Nuxt-style page structure with clear layout hierarchy."
-      ),
-      sectionDensity: selectSectionDensity(stringValue(formData, "sectionDensity", site.designGuide?.sectionDensity || "balanced")),
-      ctaStyle: selectCtaStyle(stringValue(formData, "ctaStyle", site.designGuide?.ctaStyle || "solid")),
-      componentStyle: selectComponentStyle(stringValue(formData, "componentStyle", site.designGuide?.componentStyle || "cards")),
-      designNotes: stringValue(formData, "designNotes", site.designGuide?.designNotes || "")
-    },
-    input: {
-      ...site.input,
-      navLayout: selectNavLayout(stringValue(formData, "navLayout", site.input.navLayout || "top"))
-    },
-    style: {
-      ...site.style,
-      palette: {
-        bg: stringValue(formData, "bg", site.style.palette.bg),
-        text: stringValue(formData, "text", site.style.palette.text),
-        accent: stringValue(formData, "accent", site.style.palette.accent)
+  const updated = await updateGeneratedSite(slug, (site) => {
+    const boards = updateBoards(site, formData);
+    const menus = buildMenus(boards).map((item, index) => {
+      const override = stringValue(formData, `menu-${index}-label`, item.label);
+      return { ...item, label: override };
+    });
+
+    return {
+      ...site,
+      designGuide: {
+        brandTone: selectBrandTone(stringValue(formData, "brandTone", site.designGuide?.brandTone || "technical")),
+        layoutRules: stringValue(
+          formData,
+          "layoutRules",
+          site.designGuide?.layoutRules || "Dashboard-style layout with side navigation and board sections."
+        ),
+        sectionDensity: selectSectionDensity(
+          stringValue(formData, "sectionDensity", site.designGuide?.sectionDensity || "compact")
+        ),
+        ctaStyle: selectCtaStyle(stringValue(formData, "ctaStyle", site.designGuide?.ctaStyle || "solid")),
+        componentStyle: selectComponentStyle(
+          stringValue(formData, "componentStyle", site.designGuide?.componentStyle || "cards")
+        ),
+        designNotes: stringValue(formData, "designNotes", site.designGuide?.designNotes || "")
       },
-      fonts: {
-        ...site.style.fonts,
-        heading: selectHeading(stringValue(formData, "heading", site.style.fonts.heading))
+      input: {
+        ...site.input,
+        boards,
+        menus,
+        navLayout: stringValue(formData, "navLayout", site.input.navLayout || "side") === "top" ? "top" : "side",
+        useMainVisual: formData.get("useMainVisual") === "on",
+        showCalendar: formData.get("showCalendar") === "on",
+        footer: updateFooter(site, formData)
       },
-      visual: {
-        ...site.style.visual,
-        radius: selectRadius(stringValue(formData, "radius", site.style.visual.radius))
+      style: {
+        ...site.style,
+        palette: {
+          bg: stringValue(formData, "bg", site.style.palette.bg),
+          text: stringValue(formData, "text", site.style.palette.text),
+          accent: stringValue(formData, "accent", site.style.palette.accent)
+        },
+        fonts: {
+          ...site.style.fonts,
+          heading: selectHeading(stringValue(formData, "heading", site.style.fonts.heading))
+        },
+        visual: {
+          ...site.style.visual,
+          radius: selectRadius(stringValue(formData, "radius", site.style.visual.radius))
+        }
+      },
+      content: {
+        ...site.content,
+        heroSubhead: stringValue(formData, "heroSubhead", site.content.heroSubhead),
+        aboutTitle: stringValue(formData, "aboutTitle", site.content.aboutTitle),
+        aboutBody: stringValue(formData, "aboutBody", site.content.aboutBody),
+        ctaLabel: stringValue(formData, "ctaLabel", site.content.ctaLabel)
       }
-    },
-    content: {
-      ...site.content,
-      heroSubhead: stringValue(formData, "heroSubhead", site.content.heroSubhead),
-      aboutTitle: stringValue(formData, "aboutTitle", site.content.aboutTitle),
-      aboutBody: stringValue(formData, "aboutBody", site.content.aboutBody),
-      ctaLabel: stringValue(formData, "ctaLabel", site.content.ctaLabel),
-      offeringsTitle: stringValue(formData, "offeringsTitle", site.content.offeringsTitle),
-      sections: updateSections(site, formData)
-    }
-  }));
+    };
+  });
 
   if (!updated) {
     redirect("/create");
@@ -155,7 +170,7 @@ export async function applyAiDesignSuggestion(slug: string, formData: FormData) 
 
   let parsed: unknown;
   try {
-    parsed = JSON.parse(rawSuggestion);
+    parsed = JSON.parse(rawSuggestion as string);
   } catch {
     redirect(`/${slug}/guide`);
   }
@@ -176,10 +191,6 @@ export async function applyAiDesignSuggestion(slug: string, formData: FormData) 
       componentStyle: suggestion.componentStyle,
       layoutRules: suggestion.layoutRules,
       designNotes: suggestion.designNotes
-    },
-    input: {
-      ...site.input,
-      navLayout: suggestion.navLayout
     },
     style: {
       ...site.style,

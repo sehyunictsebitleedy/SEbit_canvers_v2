@@ -1,6 +1,5 @@
 import OpenAI from "openai";
 import { buildMockContent } from "@/lib/canvers/copy";
-import { fallbackStyle } from "@/lib/canvers/themes";
 import type { GenerateSiteInput, GeneratedContent, StyleSpec } from "@/lib/canvers/types";
 import { isMockMode } from "./env";
 import { z } from "zod";
@@ -32,35 +31,31 @@ function getOpenAI() {
   });
 }
 
-function mockDesignSuggestion(input: GenerateSiteInput): DesignSuggestion {
-  const dashboardLike = input.template === "dashboard" || input.template === "editor";
-
+function mockDesignSuggestion(): DesignSuggestion {
   return {
-    brandTone: dashboardLike ? "technical" : "friendly-ai",
-    sectionDensity: dashboardLike ? "compact" : "balanced",
+    brandTone: "technical",
+    sectionDensity: "compact",
     ctaStyle: "solid",
-    componentStyle: dashboardLike ? "cards" : "lines",
+    componentStyle: "cards",
     background: "#ffffff",
     text: "#111111",
-    accent: dashboardLike ? "#b7ef3b" : "#8b5cf6",
+    accent: "#1f6feb",
     heading: "sans-serif",
-    radius: dashboardLike ? "small" : "large",
-    navLayout: dashboardLike ? "side" : "top",
-    layoutRules: dashboardLike
-      ? "Use a conventional admin dashboard grid: a persistent side nav, one unified summary card with a few key metrics, then structured list and chart panels grouped in a clear two-column layout."
-      : "Use a clear hero, concise content sections, and one focused conversion path.",
-    designNotes: dashboardLike
-      ? "Favor a plain, conventional business-tool layout over trend-heavy styling: light panels, small neutral icon badges, and one accent color used sparingly for emphasis, not decoration."
-      : "Use a solid black or white base, one accent color, and no decorative gradients."
+    radius: "small",
+    navLayout: "side",
+    layoutRules:
+      "Use a conventional admin dashboard grid: a persistent side nav, one unified summary card with a few key metrics, then structured board and widget panels grouped in a clear two-column layout.",
+    designNotes:
+      "Favor a plain, conventional business-tool layout over trend-heavy styling: light panels, small neutral icon badges, and one accent color used sparingly for emphasis, not decoration."
   };
 }
 
 export async function generateDesignSuggestion(
-  input: GenerateSiteInput,
+  _input: GenerateSiteInput,
   currentStyle: StyleSpec,
   request: string
 ): Promise<DesignSuggestion> {
-  const fallback = mockDesignSuggestion(input);
+  const fallback = mockDesignSuggestion();
   const openai = getOpenAI();
 
   if (isMockMode() || !openai) {
@@ -70,8 +65,8 @@ export async function generateDesignSuggestion(
   const response = await openai.responses.create({
     model: process.env.OPENAI_DESIGN_MODEL || process.env.OPENAI_MODEL || "gpt-4o-mini",
     instructions:
-      "You are Canvers design director. Recommend usable website design tokens. The background must be pure black or pure white. Use one accessible accent color and never recommend gradients. Favor conventional, structured layouts over trend-heavy styling: clear grids, plain cards, small neutral icon badges, and restrained use of the accent color for emphasis rather than decoration. For the dashboard template specifically, recommend a standard admin-console layout — persistent side navigation, one unified summary card with key metrics, and structured list/chart panels in a two-column grid — rather than bold marketing-style visuals. Keep layoutRules and designNotes concise.",
-    input: JSON.stringify({ request, project: input, currentStyle }),
+      "You are Canvers design director. Recommend usable website design tokens for a dashboard-style homepage. The background must be pure black or pure white. Use one accessible accent color and never recommend gradients. Favor a standard admin-console layout — persistent side navigation, one unified summary card with key metrics, and structured board/widget panels in a two-column grid — rather than bold marketing visuals. Keep layoutRules and designNotes concise.",
+    input: JSON.stringify({ request, currentStyle }),
     text: {
       format: {
         type: "json_schema",
@@ -111,71 +106,6 @@ export async function generateDesignSuggestion(
   }
 }
 
-export async function extractStyleFromReferenceUrls(): Promise<StyleSpec> {
-  return fallbackStyle;
-}
-
 export async function generateContent(input: GenerateSiteInput, style: StyleSpec): Promise<GeneratedContent> {
-  if (isMockMode()) {
-    return buildMockContent(input, style.mood);
-  }
-
-  const openai = getOpenAI();
-  if (!openai) {
-    return buildMockContent(input, style.mood);
-  }
-
-  const response = await openai.chat.completions.create({
-    model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-    response_format: { type: "json_object" },
-    messages: [
-      {
-        role: "system",
-        content:
-          "You are Canvers, an AI website draft planner. Return only valid JSON in Korean. Keep copy short, modern, trustworthy, and suitable for a first website draft."
-      },
-      {
-        role: "user",
-        content: JSON.stringify({
-          requiredShape: {
-            heroSubhead: "short Korean sentence",
-            aboutTitle: "short label",
-            aboutBody: "1 short Korean sentence",
-            ctaLabel: "short CTA",
-            offeringsTitle: "short label",
-            offerings: [{ title: "string", description: "string" }],
-            sections: [
-              {
-                id: "string",
-                label: "short English label",
-                title: "short Korean title",
-                body: "1 short Korean sentence",
-                bullets: ["string"]
-              }
-            ]
-          },
-          rules: [
-            "Create 3 sections only.",
-            "Use short copy to avoid clutter.",
-            "Do not invent real customer names or fake testimonials.",
-            "Reflect the selected template and key features.",
-            "For dashboard templates, reflect the selected chartTypes in the section plan."
-          ],
-          input,
-          style
-        })
-      }
-    ]
-  });
-
-  const content = response.choices[0]?.message.content;
-  if (!content) {
-    return buildMockContent(input, style.mood);
-  }
-
-  try {
-    return JSON.parse(content) as GeneratedContent;
-  } catch {
-    return buildMockContent(input, style.mood);
-  }
+  return buildMockContent(input, style.mood);
 }

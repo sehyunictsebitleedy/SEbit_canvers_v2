@@ -4,72 +4,39 @@ import { useRouter } from "next/navigation";
 
 const templates = [
   {
-    key: "editor",
-    title: "Editor",
-    subtitle: "콘텐츠 중심 에디터 웹서비스",
-    description:
-      "문서 작성, 콘텐츠 관리, 블로그, 지식관리 서비스처럼 사용자가 글을 만들고 정리하는 서비스에 맞춘 시안입니다.",
-    bestFor: ["문서 에디터", "블로그 CMS", "지식관리", "콘텐츠 협업"],
-    image: "/images/examples/editor-example.png" as string | null,
-    accent: "mint"
-  },
-  {
     key: "dashboard",
     title: "Dashboard",
-    subtitle: "데이터 관리 대시보드",
+    subtitle: "데이터 관리 대시보드 홈페이지",
     description:
-      "관리자 화면, 통계 페이지, CRM, 예약관리처럼 데이터를 확인하고 의사결정을 돕는 서비스에 적합합니다.",
-    bestFor: ["관리자 페이지", "통계 분석", "CRM", "예약 관리"],
-    image: "/images/examples/dashboard-example.png",
-    accent: "blue"
+      "현황 요약, 그래프, 달력, 게시판을 한 화면에서 관리하는 관리자형 홈페이지입니다. 문구는 비워두고 구조만 정하면 됩니다.",
+    bestFor: ["관리자 페이지", "고객 현황", "공지·자료 게시판", "예약·문의 관리"],
+    accent: "blue",
+    ready: true
   },
   {
-    key: "saas",
-    title: "SaaS",
-    subtitle: "서비스 런칭용 SaaS 랜딩",
+    key: "responsive",
+    title: "반응형 홈페이지",
+    subtitle: "범용 반응형 홈페이지",
     description:
-      "제품 소개, 기능 설명, 가격표, 회원가입 CTA까지 포함한 SaaS 서비스 소개 페이지를 빠르게 구성합니다.",
-    bestFor: ["B2B SaaS", "협업 도구", "구독 서비스", "제품 랜딩"],
-    image: "/images/examples/saas-example.png",
-    accent: "lime"
-  },
-  {
-    key: "template",
-    title: "Template",
-    subtitle: "범용 홈페이지 템플릿",
-    description:
-      "브랜드 소개, 포트폴리오, 마케팅 페이지처럼 다양한 목적에 맞춰 시작할 수 있는 범용 시안입니다.",
+      "브랜드 소개, 포트폴리오, 마케팅 페이지처럼 다양한 목적에 맞춰 시작할 수 있는 범용 반응형 시안입니다.",
     bestFor: ["브랜드 소개", "포트폴리오", "마케팅 페이지", "이벤트 페이지"],
-    image: null,
-    accent: "cream"
+    accent: "cream",
+    ready: false
   }
 ];
 
 export default function TemplatesPage() {
   const router = useRouter();
 
-  function startCreating(template: string) {
-    if (template === "template") {
+  function startCreating(key: string) {
+    const template = templates.find((item) => item.key === key);
+
+    if (template && !template.ready) {
       window.alert("준비 중입니다.");
       return;
     }
 
-    const themeByTemplate: Record<string, string> = {
-      editor: "minimal",
-      dashboard: "minimal",
-      saas: "soft"
-    };
-    const navByTemplate: Record<string, string> = {
-      editor: "top",
-      dashboard: "side",
-      saas: "top"
-    };
-
-    router.push(
-      `/create?industry=online-store&themeKey=${themeByTemplate[template] || "soft"}&template=${template}&navLayout=${
-        navByTemplate[template] || "top"
-      }`
-    );
+    router.push("/create?themeKey=modern-business");
   }
 
   return (
@@ -84,7 +51,7 @@ export default function TemplatesPage() {
           <a href="/product">Product</a>
           <a href="http://sebit.co.kr" target="_blank" rel="noopener noreferrer">SEbit About</a>
         </nav>
-        <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating("saas")}>
+        <button className="cv2-button cv2-button-dark" type="button" onClick={() => startCreating("dashboard")}>
           Start
         </button>
       </header>
@@ -92,13 +59,13 @@ export default function TemplatesPage() {
       <section className="templates-hero">
         <span className="cv2-pill">Choose your template</span>
         <h1>
-          어떤 웹서비스 시안을
+          어떤 홈페이지 시안을
           <br />
           만들고 싶으신가요?
         </h1>
         <p>
-          Editor, Dashboard, SaaS, Template 중 목적에 가까운 유형을 선택하면
-          Canvers가 Nuxt 스타일의 페이지 구조와 디자인 흐름을 먼저 제안합니다.
+          메인 비주얼, 게시판, 그래프·달력 위젯, 메뉴, 푸터 정보를 선택하면
+          Canvers가 홈페이지 골격을 만들어 줍니다.
         </p>
       </section>
 
@@ -115,28 +82,28 @@ export default function TemplatesPage() {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-              <button className="cv2-button cv2-button-large template-create-button" type="button" onClick={() => startCreating(template.key)}>
+              <button
+                className="cv2-button cv2-button-large template-create-button"
+                type="button"
+                onClick={() => startCreating(template.key)}
+              >
                 시안 만들기
                 <span>→</span>
               </button>
             </div>
             <figure className="template-detail-preview">
-              {template.image ? (
-                <img src={template.image} alt={`${template.title} 템플릿 시안 예시`} />
-              ) : (
-                <div className="template-kit-preview" role="img" aria-label="범용 템플릿 디자인 키트 예시">
-                  <div className="template-kit-swatches">
-                    <span className="template-kit-swatch a" />
-                    <span className="template-kit-swatch b" />
-                    <span className="template-kit-swatch c" />
-                  </div>
-                  <strong>Aa</strong>
-                  <div className="template-kit-buttons">
-                    <i />
-                    <i />
-                  </div>
+              <div className="template-kit-preview" role="img" aria-label={`${template.title} 예시`}>
+                <div className="template-kit-swatches">
+                  <span className="template-kit-swatch a" />
+                  <span className="template-kit-swatch b" />
+                  <span className="template-kit-swatch c" />
                 </div>
-              )}
+                <strong>Aa</strong>
+                <div className="template-kit-buttons">
+                  <i />
+                  <i />
+                </div>
+              </div>
             </figure>
           </article>
         ))}
@@ -145,11 +112,15 @@ export default function TemplatesPage() {
       <section className="templates-bottom-cta">
         <div>
           <span className="cv2-cta-kicker">Not sure yet?</span>
-          <h2>아직 모르겠다면 SaaS 템플릿으로 시작해보세요.</h2>
-          <p>가장 범용적인 Nuxt 스타일 서비스 소개 구조로 먼저 만들고, 이후 목적에 맞게 수정할 수 있습니다.</p>
+          <h2>대시보드 시안으로 시작해보세요.</h2>
+          <p>생성 후 Design Guide에서 스타일과 게시판, 푸터 정보를 이어서 편집할 수 있습니다.</p>
         </div>
-        <button className="cv2-button cv2-button-large template-create-button dark" type="button" onClick={() => startCreating("saas")}>
-          추천 시안 만들기
+        <button
+          className="cv2-button cv2-button-large template-create-button dark"
+          type="button"
+          onClick={() => startCreating("dashboard")}
+        >
+          시안 만들기
           <span>→</span>
         </button>
       </section>

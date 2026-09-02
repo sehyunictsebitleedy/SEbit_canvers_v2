@@ -24,13 +24,13 @@ export async function saveGeneratedSite(site: GeneratedSite) {
       slug: site.slug,
       business_name: site.input.businessName,
       industry: site.input.industry,
-      one_liner: site.input.oneLiner,
+      one_liner: site.input.oneLiner ?? site.content.heroSubhead,
       style_json: site.style,
       content_json: site.content,
       site_json: site,
-      contact: site.input.contact ?? null,
-      address: site.input.address ?? null,
-      business_hours: site.input.businessHours ?? null,
+      contact: site.input.footer?.phone ?? site.input.footer?.email ?? null,
+      address: site.input.footer?.address ?? null,
+      business_hours: site.input.footer?.hours ?? null,
       updated_at: new Date().toISOString()
     },
     { onConflict: "slug" }

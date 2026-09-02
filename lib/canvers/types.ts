@@ -1,10 +1,30 @@
 export type Track = "theme";
 
-export type TemplateKey = "saas" | "dashboard" | "editor" | "template";
-
 export type NavLayout = "top" | "side";
 
 export type DashboardChartType = "bar" | "pie" | "donut";
+
+export type BoardType = "notice" | "gallery" | "faq" | "inquiry" | "general";
+
+export type BoardConfig = {
+  name: string;
+  type: BoardType;
+};
+
+export type MenuItem = {
+  label: string;
+  href: string;
+};
+
+export type FooterInfo = {
+  companyName: string;
+  owner?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  businessNumber?: string;
+  hours?: string;
+};
 
 export type BrandTone = "trust-first" | "text-first" | "friendly-ai" | "technical";
 
@@ -66,21 +86,18 @@ export type OfferingInput = {
 
 export type GenerateSiteInput = {
   track: Track;
-  template: TemplateKey;
   navLayout?: NavLayout;
-  chartTypes?: DashboardChartType[];
   themeKey?: ThemeKey;
   businessName: string;
   slug?: string;
   industry: Industry;
-  oneLiner: string;
-  targetAudience?: string;
-  keyFeatures: string[];
-  visualTone?: string;
-  offerings: OfferingInput[];
-  address?: string;
-  contact?: string;
-  businessHours?: string;
+  oneLiner?: string;
+  useMainVisual: boolean;
+  boards: BoardConfig[];
+  chartTypes: DashboardChartType[];
+  showCalendar: boolean;
+  menus: MenuItem[];
+  footer: FooterInfo;
 };
 
 export type GeneratedSection = {
@@ -120,4 +137,12 @@ export type GeneratedSite = {
   publicUrl: string;
   cmsUrl: string;
   createdAt: string;
+};
+
+export const BOARD_TYPE_LABELS: Record<BoardType, string> = {
+  notice: "공지사항",
+  gallery: "갤러리",
+  faq: "FAQ",
+  inquiry: "문의",
+  general: "일반 게시판"
 };
